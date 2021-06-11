@@ -9,7 +9,7 @@ jobs:
   no-args:
       runs-on: ubuntu-latest
       steps:
-        - run: "echo "make a test file" > test.txt
+        - run: echo "make a test file" > test.txt
         - name: Test without any input arguments
           env:
             ZENODO_SANDBOX_ACCESS_TOKEN: ${{ secrets.ZENODO_SANDBOX_ACCESS_TOKEN }}        
@@ -18,7 +18,7 @@ jobs:
   in-collection:
       runs-on: ubuntu-latest
       steps:
-        - run: "echo "make a test file" > test.txt
+        - run: echo "make a test file" > test.txt
         - name: Test creating a draft in an existing collection
           env:
             ZENODO_SANDBOX_ACCESS_TOKEN: ${{ secrets.ZENODO_SANDBOX_ACCESS_TOKEN }}        
