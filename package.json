@@ -16,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/zenodraft/action/issues"
   },
-  "homepage": "https://github.com/zenodraft/action#readme"
+  "homepage": "https://github.com/zenodraft/action#readme",
+  "dependencies": {
+    "@actions/core": "^1.4.0",
+    "@actions/github": "^5.0.0",
+    "zenodraft": "github:zenodraft/zenodraft"
+  }
 }
