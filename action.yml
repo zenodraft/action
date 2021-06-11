@@ -2,9 +2,9 @@ name: zenodraft
 description: 'Draft a deposition on Zenodo or Zenodo Sandbox'
 inputs:
   args:
-    description: 'arguments to zenodraft executable'
+    description: 'Arguments to the zenodraft executable.'
     required: false
-    default: ''
+    default: '--help'
 runs:
   using: 'docker'
   image: 'Dockerfile'
