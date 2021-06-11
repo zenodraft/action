@@ -1,5 +1,5 @@
-import {getInput,setFailed} from '@actions/core';
-import {context} from '@actions/github';
+const {getInput,setFailed} = require('@actions/core');
+const {context} = require('@actions/github');
 
 try {
     const collection_id = getInput('in-collection');
