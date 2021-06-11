@@ -10,8 +10,5 @@ inputs:
     required: false
     default: ''
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  args:
-    - ${{ inputs.sandbox }}
-    - ${{ inputs.collection }}
+  using: 'node12'
+  main: 'index.js'

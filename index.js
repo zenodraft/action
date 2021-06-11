@@ -3,25 +3,20 @@
     const {exec} = require('@actions/exec');
     
     try {
-        const collection_id = getInput('in-collection');
-        const sandbox = getInput('sandbox') === 'true' ? true : false;
+        const collection_id = getInput('collection');
+        const sandbox = getInput('sandbox') === 'false' ? '' : '--sandbox';
         const zenodraft = 'node_modules/zenodraft/bin/index.js';
         
+        let latest_id;
         if (collection_id !== '') {
-            console.log(`Going to be publishing in collection ${collection_id}.`);
-            await exec(zenodraft, ['--sandbox', 'deposition', 'create', 'in-existing-collection', collection_id])
+            latest_id = await exec(zenodraft, [sandbox, 'deposition', 'create', 'in-existing-collection', collection_id]);
         } else {
-            console.log(`Going to be publishing in new collection.`);
+            latest_id = await exec(zenodraft, [sandbox, 'deposition', 'create', 'in-new-collection']);
         }
-    
-        if (sandbox) {
-            console.log(`Going to be publishing on Zenodo Sandbox.`);
-        } else {
-            console.log(`Going to be publishing on Zenodo`);
-        }
-    
-        console.log(zenodraft);
-    
+
+        await exec(zenodraft, [sandbox, 'file', 'add', latest_id, 'test.txt']);
+        await exec(zenodraft, [sandbox, 'metadata', 'update', latest_id, '.zenodo.json']);
+
     } catch (error) {
         setFailed(error.message);
     }
