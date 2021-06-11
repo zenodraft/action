@@ -5,10 +5,11 @@
     try {
         const collection_id = getInput('in-collection');
         const sandbox = getInput('sandbox') === 'true' ? true : false;
+        const zenodraft = 'node_modules/zenodraft/bin/index.js';
         
         if (collection_id !== '') {
             console.log(`Going to be publishing in collection ${collection_id}.`);
-            await exec('zenodraft', ['--sandbox', 'deposition', 'create', 'in-collection', collection_id])
+            await exec(zenodraft, ['--sandbox', 'deposition', 'create', 'in-collection', collection_id])
         } else {
             console.log(`Going to be publishing in new collection.`);
         }
