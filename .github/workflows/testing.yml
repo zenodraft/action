@@ -26,5 +26,4 @@ jobs:
             ZENODO_SANDBOX_ACCESS_TOKEN: ${{ secrets.ZENODO_SANDBOX_ACCESS_TOKEN }}        
           uses: ./
           with:
-            in-collection: 831247
-            sandbox: true
+            args: '--sandbox deposition create in-existing-collection 831247'
