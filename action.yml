@@ -2,11 +2,11 @@ name: zenodraft
 description: 'Draft a deposition on Zenodo or Zenodo Sandbox'
 inputs:
   sandbox:
-    description: 'Whether in Zenodo Sandbox.'
+    description: 'Whether the deposition should be created in Zenodo Sandbox.'
     required: false
     default: true
-  in-collection:
-    description: 'Create the new deposition in this collection.'
+  collection:
+    description: 'Create the new deposition as a new version in this collection.'
     required: false
     default: ''
 runs:
@@ -14,4 +14,4 @@ runs:
   image: 'Dockerfile'
   args:
     - ${{ inputs.sandbox }}
-    - ${{ inputs.in-collection }}
+    - ${{ inputs.collection }}

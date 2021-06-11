@@ -1,9 +1,9 @@
-#!/bin/bash -x
+#!/bin/bash
 
 echo "INPUT_IN_COLLECTION = $INPUT_IN_COLLECTION"
 echo "INPUT_SANDBOX = $INPUT_SANDBOX"
 
-if [ "$INPUT_SANDBOX" == "false"]
+if [ "$INPUT_SANDBOX" = "false"]
 then
     SANDBOX=""
 else
@@ -11,7 +11,7 @@ else
 fi
 
 
-if [ -z "$INPUT_IN_COLLECTION" ]
+if [ -z "$INPUT_COLLECTION" ]
 then
     LATEST_ID=$(zenodraft $SANDBOX deposition create in-new-collection)
 else
