@@ -15,7 +15,7 @@ if [ -z "$INPUT_COLLECTION" ]
 then
     LATEST_ID=$(zenodraft $SANDBOX deposition create in-new-collection)
 else
-    zenodraft $SANDBOX deposition create in-existing-collection "$INPUT_COLLECTION"
+    zenodraft "$SANDBOX" deposition create in-existing-collection "$INPUT_COLLECTION"
     LATEST_ID=$(zenodraft $SANDBOX deposition latest "$INPUT_COLLECTION")
 fi
 
