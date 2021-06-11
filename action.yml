@@ -1,0 +1,14 @@
+name: zenodraft
+description: 'Draft a deposition on Zenodo or Zenodo Sandbox'
+inputs:
+  in-collection:
+    description: 'What collection the new deposition should be created in'
+    required: false
+    default: ''
+  sandbox:
+    description: 'If true, publish draft on Zenodo Sandbox, otherwise use Zenodo'
+    required: true
+    default: true
+runs:
+  using: 'node12'
+  main: 'index.js'

@@ -1,0 +1,28 @@
+name: testing
+on:
+  pull_request:
+  push:
+
+
+jobs:
+
+  no-args:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Clone this repository
+          uses: actions/checkout@v2
+        - name: Test without any input arguments
+          uses: ./
+
+  in-collection:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Clone this repository
+          uses: actions/checkout@v2
+        - name: Get a copy of a curations file
+          run: curl https://raw.githubusercontent.com/NLeSC/tortellini-on-rsd/main/config/curations.yml > curations.yml
+        - name: Test with a local curations file
+          uses: ./
+          with:
+            in-collection: 831247
+            sandbox: true
