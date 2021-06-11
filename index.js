@@ -9,7 +9,7 @@
         
         if (collection_id !== '') {
             console.log(`Going to be publishing in collection ${collection_id}.`);
-            await exec(zenodraft, ['--sandbox', 'deposition', 'create', 'in-collection', collection_id])
+            await exec(zenodraft, ['--sandbox', 'deposition', 'create', 'in-existing-collection', collection_id])
         } else {
             console.log(`Going to be publishing in new collection.`);
         }
