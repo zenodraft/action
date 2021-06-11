@@ -1,5 +1,5 @@
 const {getInput,setFailed} = require('@actions/core');
-const {create_empty_deposition_in_new_collection, create_empty_deposition_in_existing_collection} = require('zenodraft');
+import {exec} from '@actions/exec';
 
 
 try {
@@ -8,11 +8,9 @@ try {
     
     if (collection_id !== '') {
         console.log(`Going to be publishing in collection ${collection_id}.`);
-        create_empty_deposition_in_existing_collection(sandbox, collection_id, false);
-
+        await exec('zenodraft', ['--sandbox', 'deposition', 'create', 'in-collection', collection_id])
     } else {
         console.log(`Going to be publishing in new collection.`);
-        create_empty_deposition_in_new_collection(sandbox, false);
     }
 
     if (sandbox) {
