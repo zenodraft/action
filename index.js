@@ -1,5 +1,5 @@
 const {getInput,setFailed} = require('@actions/core');
-import {exec} from '@actions/exec';
+const {exec} = require('@actions/exec');
 
 
 try {
