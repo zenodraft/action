@@ -12,6 +12,8 @@ jobs:
         - name: Clone this repository
           uses: actions/checkout@v2
         - name: Test without any input arguments
+          env:
+            ZENODO_SANDBOX_ACCESS_TOKEN: ${{ secrets.ZENODO_SANDBOX_ACCESS_TOKEN }}        
           uses: ./
 
   in-collection:
@@ -20,6 +22,8 @@ jobs:
         - name: Clone this repository
           uses: actions/checkout@v2
         - name: Test creating a draft in an existing collection
+          env:
+            ZENODO_SANDBOX_ACCESS_TOKEN: ${{ secrets.ZENODO_SANDBOX_ACCESS_TOKEN }}        
           uses: ./
           with:
             in-collection: 831247
