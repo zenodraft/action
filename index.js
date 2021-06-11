@@ -1,6 +1,5 @@
 const {getInput,setFailed} = require('@actions/core');
-const {context} = require('@actions/github');
-//const zenodraft = require('zenodraft');
+const zenodraft = require('zenodraft');
 
 
 try {
@@ -19,9 +18,8 @@ try {
         console.log(`Going to be publishing on Zenodo`);
     }
 
+    console.log(zenodraft);
 
-    const payload = JSON.stringify(context.payload, undefined, 2)
-    console.log(`The event payload: ${payload}`);
 } catch (error) {
     setFailed(error.message);
 }

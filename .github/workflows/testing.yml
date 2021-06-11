@@ -19,9 +19,7 @@ jobs:
       steps:
         - name: Clone this repository
           uses: actions/checkout@v2
-        - name: Get a copy of a curations file
-          run: curl https://raw.githubusercontent.com/NLeSC/tortellini-on-rsd/main/config/curations.yml > curations.yml
-        - name: Test with a local curations file
+        - name: Test creating a draft in an existing collection
           uses: ./
           with:
             in-collection: 831247
