@@ -1,12 +1,12 @@
 (async () => {
     const {getInput,setFailed} = require('@actions/core');
     const {exec} = require('@actions/exec');
-    const {
+    import {
         create_empty_deposition_in_existing_collection,
         create_empty_deposition_in_new_collection,
         add_file_to_deposition,
         update_deposition_metadata
-    } = require('zenodraft');
+    } from 'zenodraft';
     
     
     try {
