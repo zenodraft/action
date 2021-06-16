@@ -1,11 +1,5 @@
 import {getInput,setFailed} from '@actions/core';
-import {exec} from '@actions/exec';
-import {
-    create_empty_deposition_in_existing_collection,
-    create_empty_deposition_in_new_collection,
-    add_file_to_deposition,
-    update_deposition_metadata
-} from 'zenodraft';
+import zenodraft from 'zenodraft'
 
 
 export const main = async (): Promise<void> => {
@@ -17,12 +11,12 @@ export const main = async (): Promise<void> => {
         
         let latest_id;
         if (collection_id === '') {
-            latest_id = await create_empty_deposition_in_new_collection(sandbox, verbose)
+            latest_id = await zenodraft.create_empty_deposition_in_new_collection(sandbox, verbose)
         } else {
-            latest_id = await create_empty_deposition_in_existing_collection(sandbox, collection_id, verbose)
+            latest_id = await zenodraft.create_empty_deposition_in_existing_collection(sandbox, collection_id, verbose)
         }
-        await add_file_to_deposition(sandbox, latest_id, 'test.txt', verbose);
-        await update_deposition_metadata(sandbox, latest_id, '.zenodo.json', verbose);
+        await zenodraft.add_file_to_deposition(sandbox, latest_id, 'test.txt', verbose);
+        await zenodraft.update_deposition_metadata(sandbox, latest_id, '.zenodo.json', verbose);
     } catch (error) {
         setFailed(error.message);
     }
