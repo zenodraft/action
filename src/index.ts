@@ -21,3 +21,5 @@ export const main = async (): Promise<void> => {
         setFailed(error.message);
     }
 }
+
+main()
