@@ -1,7 +1,6 @@
 import {getInput,setFailed} from '@actions/core';
 import zenodraft from 'zenodraft'
 
-
 export const main = async (): Promise<void> => {
 
     try {

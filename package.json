@@ -8,7 +8,7 @@
     "@actions/exec": "^1.1.0",
     "@actions/github": "^5.0.0",
     "typescript": "^4.3.2",
-    "zenodraft": "file:../zenodraft/zenodraft-0.4.0.tgz"
+    "zenodraft": "file:../zenodraft/zenodraft-0.6.0.tgz"
   },
   "description": "",
   "homepage": "https://github.com/zenodraft/action#readme",
