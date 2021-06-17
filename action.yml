@@ -2,7 +2,7 @@ name: zenodraft
 description: 'Draft a deposition on Zenodo or Zenodo Sandbox'
 inputs:
   sandbox:
-    description: 'Whether the deposition should be created in Zenodo Sandbox.'
+    description: 'Whether the deposition should be created on Zenodo Sandbox.'
     required: false
     default: true
   collection:
