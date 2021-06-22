@@ -5,6 +5,7 @@ export const main = async (): Promise<void> => {
 
     try {
         const collection_id = getInput('collection');
+        const publish = getInput('publish');
         const sandbox = getInput('sandbox') === 'false' ? false : true;
         const verbose = false;
         
@@ -16,6 +17,10 @@ export const main = async (): Promise<void> => {
         }
         await zenodraft.file_add(sandbox, latest_id, 'test.txt', verbose);
         await zenodraft.metadata_update(sandbox, latest_id, '.zenodo.json', verbose);
+
+        if (publish === 'true') {
+            await zenodraft.deposition_publish(sandbox, latest_id, verbose)
+        }
     } catch (error) {
         setFailed(error.message);
     }
