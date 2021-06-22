@@ -5,6 +5,14 @@ inputs:
     description: 'Create the new deposition as a new version in this collection.'
     required: false
     default: ''
+  filenames:
+    description: 'List of space-separate filenames that should be upload separately instead of the default behavior of uploading a snapshot of the entire repository as an archive.'
+    required: false
+    default: ''
+  metadata:
+    description: 'Filename that contains the metadata for the deposition in Zenodo metadata format.'
+    required: false
+    default: ''
   publish:
     description: 'Publish the deposition. Beware, deposition contents cannot be changed once the deposition has been published.'
     required: false
