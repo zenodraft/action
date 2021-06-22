@@ -6,7 +6,7 @@ inputs:
     required: false
     default: ''
   publish:
-    description: 'Automatically publish the deposition (Beware, deposition contents cannot be changed once it has been published).'
+    description: 'Publish the deposition. Beware, deposition contents cannot be changed once the deposition has been published.'
     required: false
     default: false
   sandbox:
