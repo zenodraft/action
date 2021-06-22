@@ -29,9 +29,11 @@ export const main = async (): Promise<void> => {
             if (compression === 'tar.gz') {
                 await exec('touch', ['archive.tar.gz']);
                 await exec('tar', ['--exclude=.git', '--exclude=archive.tar.gz', '-zcvf', 'archive.tar.gz', '.']);
+                await zenodraft.file_add(sandbox, latest_id, 'archive.tar.gz', verbose);
             }
             if (compression === 'zip') {
                 await exec('zip', ['-r', '-x', '/.git*', '-v', 'archive.zip', '.']);
+                await zenodraft.file_add(sandbox, latest_id, 'archive.zip', verbose);
             } else {
                 throw new Error('Unknown compression method.')
             }
