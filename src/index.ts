@@ -7,6 +7,7 @@ export const main = async (): Promise<void> => {
 
     try {
         const collection_id = getInput('collection');
+        const compression = getInput('compression');
         const filenames = getInput('filenames');
         const metadata = getInput('metadata');
         const publish = getInput('publish');
@@ -25,8 +26,15 @@ export const main = async (): Promise<void> => {
         // upload only the files specified in the filenames argument, or
         // upload a snapshot of the complete repository
         if (filenames === '') {
-            await exec('tar', ['--help']);
-            await exec('zip', ['--help']);
+            if (compression === 'tar.gz') {
+                await exec('touch', ['archive.tar.gz']);
+                await exec('tar', ['--exclude=.git', '--exclude=archive.tar.gz', '-zcvf', 'archive.tar.gz', '.']);
+            }
+            if (compression === 'zip') {
+                await exec('zip', ['-r', '-x', '/.git*', '-v', 'archive.zip', '.']);
+            } else {
+                throw new Error('Unknown compression method.')
+            }
         } else {
             for (const filename of filenames.split(' ')) {
                 await zenodraft.file_add(sandbox, latest_id, filename, verbose);

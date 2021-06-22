@@ -5,6 +5,10 @@ inputs:
     description: 'Create the new deposition as a new version in this collection.'
     required: false
     default: ''
+  compression:
+    description: 'Which compression to use when making a snapshot of the entire repository (precludes use of argument 'filenames').'
+    required: false
+    default: 'zip'
   filenames:
     description: 'List of space-separate filenames that should be upload separately instead of the default behavior of uploading a snapshot of the entire repository as an archive.'
     required: false

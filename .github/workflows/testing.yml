@@ -25,18 +25,8 @@ jobs:
           uses: ./
           with:
             collection: '831247'
+            metadata: .github/.zenodo-in-collection.json
 
-  with-metadata:
-      runs-on: ubuntu-latest
-      steps:
-        - name: checkout
-          uses: actions/checkout@v2      
-        - name: Test with metadata
-          env:
-            ZENODO_SANDBOX_ACCESS_TOKEN: ${{ secrets.ZENODO_SANDBOX_ACCESS_TOKEN }}        
-          uses: ./
-            with:
-              metadata: .github/.zenodo-1.json
 
   with-filenames:
       runs-on: ubuntu-latest
@@ -51,3 +41,17 @@ jobs:
           uses: ./
             with:
               filenames: test.txt test.pdf
+              metadata: .github/.zenodo-with-filenames.json
+
+  with-compression-tar-gz:
+      runs-on: ubuntu-latest
+      steps:
+        - name: checkout
+          uses: actions/checkout@v2
+        - name: Test with metadata
+          env:
+            ZENODO_SANDBOX_ACCESS_TOKEN: ${{ secrets.ZENODO_SANDBOX_ACCESS_TOKEN }}        
+          uses: ./
+            with:
+              compression: tar.gz
+              metadata: .github/.zenodo-with-compression-tar-gz.json
