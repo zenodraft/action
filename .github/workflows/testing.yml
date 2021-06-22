@@ -35,8 +35,8 @@ jobs:
           env:
             ZENODO_SANDBOX_ACCESS_TOKEN: ${{ secrets.ZENODO_SANDBOX_ACCESS_TOKEN }}        
           uses: ./
-            with:
-              metadata: .github/.zenodo-1.json
+          with:
+            metadata: .github/.zenodo-1.json
 
   with-filenames:
       runs-on: ubuntu-latest
@@ -49,5 +49,5 @@ jobs:
           env:
             ZENODO_SANDBOX_ACCESS_TOKEN: ${{ secrets.ZENODO_SANDBOX_ACCESS_TOKEN }}        
           uses: ./
-            with:
-              filenames: test.txt test.pdf
+          with:
+            filenames: test.txt test.pdf
