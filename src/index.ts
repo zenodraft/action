@@ -28,7 +28,7 @@ export const main = async (): Promise<void> => {
             await exec('tar', ['--help']);
             await exec('zip', ['--help']);
         } else {
-            for (const filename of filenames) {
+            for (const filename of filenames.split(' ')) {
                 await zenodraft.file_add(sandbox, latest_id, filename, verbose);
             }
         }
