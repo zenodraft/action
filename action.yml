@@ -6,7 +6,7 @@ inputs:
     required: false
     default: ''
   compression:
-    description: 'Which compression to use when making a snapshot of the entire repository (precludes use of argument 'filenames').'
+    description: 'Which compression to use when making a snapshot of the entire repository (precludes use of argument \'filenames\').'
     required: false
     default: 'zip'
   filenames:
