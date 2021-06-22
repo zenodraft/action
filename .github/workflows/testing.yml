@@ -28,6 +28,7 @@ jobs:
   #           metadata: .github/.zenodo-in-collection.json
 
 
+<<<<<<< HEAD
   # with-filenames:
   #     runs-on: ubuntu-latest
   #     steps:
@@ -55,3 +56,32 @@ jobs:
   #           with:
   #             compression: tar.gz
   #             metadata: .github/.zenodo-with-compression-tar-gz.json
+=======
+  with-filenames:
+      runs-on: ubuntu-latest
+      steps:
+        - name: checkout
+          uses: actions/checkout@v2
+        - run: echo "txt contents" > test.txt
+        - run: echo "pdf contents" > test.pdf
+        - name: Test with metadata
+          env:
+            ZENODO_SANDBOX_ACCESS_TOKEN: ${{ secrets.ZENODO_SANDBOX_ACCESS_TOKEN }}        
+          uses: ./
+          with:
+            filenames: test.txt test.pdf
+            metadata: .github/.zenodo-with-filenames.json
+
+  with-compression-tar-gz:
+      runs-on: ubuntu-latest
+      steps:
+        - name: checkout
+          uses: actions/checkout@v2
+        - name: Test with metadata
+          env:
+            ZENODO_SANDBOX_ACCESS_TOKEN: ${{ secrets.ZENODO_SANDBOX_ACCESS_TOKEN }}        
+          uses: ./
+          with:
+            compression: tar.gz
+            metadata: .github/.zenodo-with-compression-tar-gz.json
+>>>>>>> 30db7e2d5f1d5e58653f31f3941a178603aaabc1
