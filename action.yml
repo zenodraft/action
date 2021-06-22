@@ -10,7 +10,7 @@ inputs:
     required: false
     default: false
   sandbox:
-    description: 'Whether the deposition should be created in Zenodo Sandbox.'
+    description: 'Whether the deposition should be created on Zenodo Sandbox instead of Zenodo.'
     required: false
     default: true
 runs:
