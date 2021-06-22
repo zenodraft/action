@@ -10,7 +10,7 @@ inputs:
     required: false
     default: 'zip'
   filenames:
-    description: 'List of space-separate filenames that should be upload separately instead of the default behavior of uploading a snapshot of the entire repository as an archive.'
+    description: 'List of space-separated filenames that should be upload separately instead of the default behavior of uploading a snapshot of the entire repository as an archive (precludes use of argument compression).'
     required: false
     default: ''
   metadata:

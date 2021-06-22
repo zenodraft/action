@@ -30,8 +30,7 @@ export const main = async (): Promise<void> => {
                 await exec('touch', ['archive.tar.gz']);
                 await exec('tar', ['--exclude=.git', '--exclude=archive.tar.gz', '-zcvf', 'archive.tar.gz', '.']);
                 await zenodraft.file_add(sandbox, latest_id, 'archive.tar.gz', verbose);
-            }
-            if (compression === 'zip') {
+            } else if (compression === 'zip') {
                 await exec('zip', ['-r', '-x', '/.git*', '-v', 'archive.zip', '.']);
                 await zenodraft.file_add(sandbox, latest_id, 'archive.zip', verbose);
             } else {
