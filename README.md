@@ -4,12 +4,12 @@ Automates drafting depositions on Zenodo or Zenodo Sandbox.
 
 ## Features
 
-1. Choose which platform you want to draft your deposition on (Zenodo or Zenodo Sandbox), and easily switch between them (see input argument `sandbox`)
-2. Choose to create your draft deposition as a new version in an existing collection, or as a new deposition in a new collection (see input argument `collection`)
-3. Choose to finalize the deposition as part of the automation, or leave the deposition as draft for you to inspect and publish manually by clicking the button on Zenodo or Zenodo Sandbox (see input argument `publish`)
-4. Publish a snapshot of the repository as a zip or tar.gz (see input argument `compression`)
-5. Instead of publishing a snapshot, select a subset of files to publish (see input argument `filenames`)
-6. Automatically attach metadata such as title, authors, and contributors to your deposition using information from a file in your repository (see input argument `metadata`)
+1. Choose which platform you want to draft your deposition on (Zenodo or Zenodo Sandbox), and easily switch between them.
+2. Choose to create your draft deposition as a new version in an existing collection, or as a new deposition in a new collection.
+3. Choose to finalize the deposition as part of the automation, or leave the deposition as draft for you to inspect and publish manually by clicking the button on Zenodo or Zenodo Sandbox.
+4. Publish a snapshot of the repository as a zip or tar.gz.
+5. Instead of publishing a snapshot, select a subset of files to publish.
+6. Automatically attach metadata such as title, authors, and contributors to your deposition using information from a file in your repository.
 
 ## Example workflow
 
