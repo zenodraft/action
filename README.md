@@ -58,4 +58,4 @@ To use `zenodraft/action`, a personal access token is required, one for each pla
 `zenodraft/action` looks for the access token in the environment variables named
 `ZENODO_SANDBOX_ACCESS_TOKEN` and `ZENODO_ACCESS_TOKEN`. The example workflow above shows that these
 variables are assigned their value from the repository's secrets. Visit Zenodo Sandbox (https://sandbox.zenodo.org/account/settings/applications/) and/or
-Zenodo (https://zenodo.org/account/settings/applications/) to create your own tokens, then go to [https://github.com/&lt;organization name&gt;/&lt;repository name&gt;/settings/secrets/actions](https://github.com/%3Corganization%20name%3E%2F%3Crepository%20name%3E/settings/secrets/actions) to set your repository secret.
+Zenodo (https://zenodo.org/account/settings/applications/) to create your own tokens, then go to [https://github.com/&lt;organization name&gt;/&lt;repository name&gt;/settings/secrets/actions](https://github.com/%3Corganization%20name%3E/%3Crepository%20name%3E/settings/secrets/actions) to set your repository secret.
