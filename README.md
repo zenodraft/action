@@ -1,4 +1,4 @@
-# `zenodraft/action@0.7.0`
+# `zenodraft/action@0.7.0` PRERELEASE
 
 Automates drafting depositions on Zenodo or Zenodo Sandbox.
 
