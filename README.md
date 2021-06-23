@@ -47,6 +47,7 @@ jobs:
 | parameter name | default value | description |
 | :-- | :-- | :-- |
 | `collection`  | `''` | By default, the draft is created as a new deposition in a new collection. Alternatively, you can have the new draft appear as a new version in a collection that you own on the target platform by assigning the collection identifier such as `1234567` to `collection`. You can find the collection identifier via Zenodo's frontend as the last part of the DOI listed under _Cite all versions?_ in the sidebar. |
+| `filenames`| `''` | List of space-separated filenames that should be uploaded separately instead of the default behavior of uploading a snapshot of the entire repository as an archive (precludes use of argument compression). |
 | `metadata`  | `''` | Used to specify which repository file holds the metadata to be associated with the deposition. The metadata file should be a valid JSON file in Zenodo metadata format. |
 | `publish`  | `false` | Whether to automate finalizing the draft deposition as part of the automation, or to leave it to the user to click `Publish` manually after inspecting the draft deposition on the respective platform. |
 | `sandbox`  | `true` | Whether to create the draft deposition on Zenodo (production) or Zenodo Sandbox (testing and development). |
