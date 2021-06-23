@@ -51,3 +51,11 @@ jobs:
 | `publish`  | `false` | Whether to automate finalizing the draft deposition as part of the automation, or to leave it to the user to click `Publish` manually after inspecting the draft deposition on the respective platform. |
 | `sandbox`  | `true` | Whether to create the draft deposition on Zenodo (production) or Zenodo Sandbox (testing and development). |
 
+
+## Access tokens & repository secrets
+
+To use `zenodraft/action`, a personal access token is required, one for each platform you plan on using (Zenodo Sandbox, Zenodo).
+`zenodraft/action` looks for the access token in the environment variables named
+`ZENODO_SANDBOX_ACCESS_TOKEN` and `ZENODO_ACCESS_TOKEN`. The example workflow above shows that these
+variables are assigned their value from the repository's secrets. Visit Zenodo Sandbox (https://sandbox.zenodo.org/account/settings/applications/) and/or
+Zenodo (https://zenodo.org/account/settings/applications/) to create your own tokens, then go to https://github.com/<organization name>/<repository name>/settings/secrets/actions to set your repository secret.
