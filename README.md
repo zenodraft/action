@@ -9,7 +9,7 @@ Automates drafting depositions on Zenodo or Zenodo Sandbox.
 3. Choose to finalize the deposition as part of the automation, or leave the deposition as draft for you to inspect and publish manually by clicking the button on Zenodo or Zenodo Sandbox
 4. Publish a snapshot of the repository as a zip or tar.gz
 5. Instead of publishing a snapshot, select a subset of files to publish
-6. Automatically attach metadata such as title, authors, and constributors to your deposition using information from a file in your repository
+6. Automatically attach metadata such as title, authors, and contributors to your deposition using information from a file in your repository
 
 ## Example workflow
 
