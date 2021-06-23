@@ -13,6 +13,8 @@ Automates drafting depositions on Zenodo or Zenodo Sandbox.
 
 ## Example workflow
 
+Creates a draft snapshot of your repository contents as a new version in collection `1234567` on Zenodo Sandbox using metadata from repository file `.zenodo.json`.
+
 ```yaml
 name: zenodraft
 on:
@@ -26,7 +28,7 @@ jobs:
       steps:
         - name: checkout
           uses: actions/checkout@v2      
-        - name: Publish a draft snapshot of your repository contents as a new
+        - name: Create a draft snapshot of your repository contents as a new
                 version in collection 1234567 on Zenodo Sandbox using metadata
                 from repository file .zenodo.json
           env:
