@@ -19,7 +19,8 @@ Creates a draft snapshot of your repository contents as a new version in collect
 name: zenodraft
 on:
   workflow_dispatch:
-  # workflow-dispatch allows for triggering the workflow manually via the Actions tab
+  # workflow-dispatch allows for triggering the workflow
+  # manually via the Actions tab
 
 jobs:
 
