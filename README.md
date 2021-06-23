@@ -33,7 +33,7 @@ jobs:
                 version in collection 1234567 on Zenodo Sandbox using metadata
                 from repository file .zenodo.json
           env:
-            ZENODO_SANDBOX_ACCESS_TOKEN: ${{ secrets.ZENODO_SANDBOX_ACCESS_TOKEN }}        
+            ZENODO_SANDBOX_ACCESS_TOKEN: ${{ secrets.ZENODO_SANDBOX_ACCESS_TOKEN }}
           uses: zenodraft/action@0.7.0
           with:
             collection: 1234567
