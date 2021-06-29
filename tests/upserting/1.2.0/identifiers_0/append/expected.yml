@@ -1,0 +1,5 @@
+cff-version: 1.2.0
+identifiers:
+  - description: Version doi for this work.
+    value: 10.5281/upserted.1234567
+    type: doi

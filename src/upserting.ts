@@ -96,14 +96,21 @@ export const upsert_prereserved_doi = (upsert_doi: boolean, upsert_location: str
             `Your CITATION.cff file does not support key \'identifiers\'. Consider updating its \'cff-version\' value.`
         )
         const index = parseInt(upsert_location.split(new RegExp('[\\[\\]]'))[1])
-        let obj: Identifier = {
-            type: 'doi',
-            value: prereserved_doi,
-        }
+
+        let obj: Identifier
         if (supports_identifiers_description_key(cff)) {
-            // include 'description' in the object if the cff version supports its use
-            obj = { ...obj, description: 'Version doi for this work.' }
+            obj = {
+                description: 'Version doi for this work.',
+                value: prereserved_doi,
+                type: 'doi'
+            }
+        } else {
+            obj = {
+                value: prereserved_doi,
+                type: 'doi'
+            }
         }
+
         if (Object.keys(cff).includes('identifiers') && cff.identifiers instanceof Array) {
             assert(0 <= index && index <= cff.identifiers.length)
             if (index < cff.identifiers.length) {
@@ -137,6 +144,7 @@ export const upsert_prereserved_doi = (upsert_doi: boolean, upsert_location: str
 
 
 const write_cff_file = (cff: Cff): void => {
-    yaml.dump(cff, { sortKeys: false })
+    const cffstr = yaml.dump(cff, { sortKeys: false })
+    fs.writeFileSync('CITATION.cff', cffstr, 'utf8')
     return
 }
