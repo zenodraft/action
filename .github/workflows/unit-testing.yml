@@ -1,6 +1,6 @@
 name: testing
 on:
-  pull:
+  pull_request:
 
 jobs:
 
