@@ -10,7 +10,7 @@ export const main = async (): Promise<void> => {
         const compression = getInput('compression');
         const filenames = getInput('filenames');
         const metadata = getInput('metadata');
-        const publish = getInput('publish');
+        const publish = getInput('publish') === 'true' ? true : false;
         const sandbox = getInput('sandbox') === 'false' ? false : true;
         const verbose = false;
 
@@ -47,7 +47,7 @@ export const main = async (): Promise<void> => {
             await zenodraft.metadata_update(sandbox, latest_id, metadata, verbose);
         }
 
-        if (publish === 'true') {
+        if (publish === true) {
             await zenodraft.deposition_publish(sandbox, latest_id, verbose)
         }
 
