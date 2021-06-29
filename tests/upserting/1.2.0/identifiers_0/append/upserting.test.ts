@@ -2,7 +2,6 @@ import { upsert_prereserved_doi } from '../../../../../src/upserting'
 import * as fs from 'fs'
 import * as path from 'path'
 import * as os from 'os'
-import * as yaml from 'js-yaml'
 
 
 let temporary_directory: string;
@@ -27,7 +26,7 @@ beforeEach(() => {
 test('upserting a doi',() => {
 
     const upsert_doi = true
-    const upsert_location = 'identifiers[0]'
+    const upsert_location = 'identifiers'
     const prereserved_doi = '10.5281/upserted.1234567'
 
     upsert_prereserved_doi(upsert_doi, upsert_location, prereserved_doi)

@@ -26,7 +26,7 @@ beforeEach(() => {
 test('upserting a doi',() => {
 
     const upsert_doi = true
-    const upsert_location = 'identifiers'
+    const upsert_location = 'identifiers[0]'
     const prereserved_doi = '10.5281/upserted.1234567'
 
     upsert_prereserved_doi(upsert_doi, upsert_location, prereserved_doi)
