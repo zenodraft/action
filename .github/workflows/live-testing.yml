@@ -71,4 +71,4 @@ jobs:
           with:
             upsert-doi: true
             upsert-location: identifiers
-            metadata: .zenodo-upserting.json
+            metadata: .github/.zenodo-upserting.json
