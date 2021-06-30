@@ -46,47 +46,51 @@ jobs:
 
 ### `collection`
 
-default value: `''`
-
-By default, the draft is created as a new deposition in a new collection. Alternatively, you can have the new draft appear as a new version in a collection that you own on the target platform by assigning the collection identifier such as `1234567` to `collection`. You can find the collection identifier via Zenodo's frontend as the last part of the DOI listed under _Cite all versions?_ in the sidebar.
+By leaving `collection` unspecified, the draft is created as a new deposition in a new collection. Alternatively, you can have the new draft appear as a new version in a collection that you own on the target platform by assigning the collection identifier such as `1234567` to `collection`. You can find the collection identifier via Zenodo's frontend as the last part of the DOI listed under _Cite all versions?_ in the sidebar.
 
 ### `compression`
 
-default value: `zip`
+- default value: `zip`
+- choices: `zip` | `tar.gz`
+- overruled by `filenames`
 
-Which compression to use when making a snapshot of the entire repository (Valid options are `zip` or `tar.gz`; precludes use of argument `filenames`).
+Which compression to use when making a snapshot of the entire repository.
 
 ### `filenames`
 
-default value: `''`
+- overrules argument `compression`
 
-List of space-separated filenames that should be uploaded separately instead of the default behavior of uploading a snapshot of the entire repository as an archive (precludes use of argument compression).
+List of space-separated filenames that should be uploaded separately instead of the default behavior of uploading a snapshot of the entire repository as an archive.
 
 ### `metadata`
 
-default value: `''`
-
-Used to specify which repository file holds the metadata to be associated with the deposition. The metadata file should be a valid JSON file in Zenodo metadata format.
+Used to specify which file holds the metadata to be associated with the deposition. The metadata file should be a valid JSON file in Zenodo metadata format.
 
 ### `publish`
 
-default value: `false`
+- default value: `false`
 
-Whether to automate finalizing the draft deposition as part of the automation, or to leave it to the user to click `Publish` manually after inspecting the draft deposition on the respective platform.
+Whether to automate finalizing the draft deposition as part of the automation (`publish: true`), or to leave it to the user to click `Publish` manually after inspecting the draft deposition on the respective platform (`publish: false`).
 
 ### `upsert-doi`
 
-default value: `false`
+- default value: `false`
+- requires: `upsert-location`
 
-Update the citation metadata file CITATION.cff with the draft deposition's prereserved doi before uploading any files to Zenodo or Zenodo Sandbox.
+If `true`, update the citation metadata file CITATION.cff with the draft deposition's prereserved doi before uploading any files to Zenodo or Zenodo Sandbox.
 
 ### `upsert-location`
 
-default value: `''`
+- choices: `doi` | `identifiers` | `identifiers[i]`
+- only relevant when `upsert-doi` is `true`
 
 Where to insert the prereserved doi value in CITATION.cff. Valid options are `doi`, `identifiers`, or `identifiers[i]`, where `i` should be replaced with an integer index into the array `identifiers`.
 
-### `sandbox`  | `true` | Whether to create the draft deposition on Zenodo (production) or Zenodo Sandbox (testing and development).
+### `sandbox`
+
+- default value: `true`
+
+Whether to create the draft deposition on Zenodo  (`sandbox: false`; production) or Zenodo Sandbox  (`sandbox: true`; testing and development).
 
 ## Access tokens & repository secrets
 
