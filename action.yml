@@ -1,33 +1,41 @@
 name: zenodraft
 branding:
-  icon: 'upload-cloud'
-  color: 'yellow'
-description: 'Draft a deposition on Zenodo or Zenodo Sandbox'
+  icon: upload-cloud
+  color: yellow
+description: Draft a deposition on Zenodo or Zenodo Sandbox
 inputs:
   collection:
-    description: 'Create the new deposition as a new version in this collection.'
+    description: Create the new deposition as a new version in this collection.
     required: false
     default: ''
   compression:
-    description: 'Which compression to use when making a snapshot of the entire repository (precludes use of argument filenames).'
+    description: Which compression to use when making a snapshot of the entire repository (precludes use of argument 'filenames'). Valid options are 'zip' or 'tar.gz'.
     required: false
-    default: 'zip'
+    default: zip
   filenames:
-    description: 'List of space-separated filenames that should be upload separately instead of the default behavior of uploading a snapshot of the entire repository as an archive (precludes use of argument compression).'
+    description: List of space-separated filenames that should be upload separately instead of the default behavior of uploading a snapshot of the entire repository as an archive (precludes use of argument 'compression').
     required: false
     default: ''
   metadata:
-    description: 'Filename that contains the metadata for the deposition in Zenodo metadata format.'
+    description: Filename that contains the metadata for the deposition in Zenodo metadata format.
     required: false
     default: ''
   publish:
-    description: 'Publish the deposition. Beware, deposition contents cannot be changed once the deposition has been published.'
+    description: Publish the deposition. Beware, deposition contents cannot be changed once the deposition has been published.
     required: false
     default: false
+  upsert-doi:
+    description: Update the citation metadata file CITATION.cff with the draft deposition's prereserved doi before uploading any files to Zenodo or Zenodo Sandbox.
+    required: false
+    default: false
+  upsert-location:
+    description: Where to insert the prereserved doi value in CITATION.cff. Valid options are 'doi', 'identifiers', or 'identifiers[i]', where 'i' should be replaced with an integer index into the array 'identifiers'.
+    required: false
+    default: ''
   sandbox:
-    description: 'Whether the deposition should be created on Zenodo Sandbox instead of Zenodo.'
+    description: Whether the deposition should be created on Zenodo Sandbox instead of Zenodo.
     required: false
     default: true
 runs:
-  using: 'node12'
-  main: 'lib/index.js'
+  using: node12
+  main: lib/index.js

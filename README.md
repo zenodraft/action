@@ -1,4 +1,4 @@
-# `zenodraft/action@0.7.1` PRERELEASE
+# `zenodraft/action@0.9.0` PRERELEASE
 
 Automates drafting depositions on Zenodo or Zenodo Sandbox.
 
@@ -34,7 +34,7 @@ jobs:
                 from repository file .zenodo.json
           env:
             ZENODO_SANDBOX_ACCESS_TOKEN: ${{ secrets.ZENODO_SANDBOX_ACCESS_TOKEN }}
-          uses: zenodraft/action@0.7.1
+          uses: zenodraft/action@0.9.0
           with:
             collection: 1234567
             metadata: .zenodo.json
@@ -44,15 +44,53 @@ jobs:
 
 ## Input parameters
 
-| parameter name | default value | description |
-| :-- | :-- | :-- |
-| `collection`  | `''` | By default, the draft is created as a new deposition in a new collection. Alternatively, you can have the new draft appear as a new version in a collection that you own on the target platform by assigning the collection identifier such as `1234567` to `collection`. You can find the collection identifier via Zenodo's frontend as the last part of the DOI listed under _Cite all versions?_ in the sidebar. |
-| `compression` | `zip` | Which compression to use when making a snapshot of the entire repository (Valid options are `zip` or `tar.gz`; precludes use of argument `filenames`) |
-| `filenames`| `''` | List of space-separated filenames that should be uploaded separately instead of the default behavior of uploading a snapshot of the entire repository as an archive (precludes use of argument compression). |
-| `metadata`  | `''` | Used to specify which repository file holds the metadata to be associated with the deposition. The metadata file should be a valid JSON file in Zenodo metadata format. |
-| `publish`  | `false` | Whether to automate finalizing the draft deposition as part of the automation, or to leave it to the user to click `Publish` manually after inspecting the draft deposition on the respective platform. |
-| `sandbox`  | `true` | Whether to create the draft deposition on Zenodo (production) or Zenodo Sandbox (testing and development). |
+### `collection`
 
+By leaving `collection` unspecified, the draft is created as a new deposition in a new collection. Alternatively, you can have the new draft appear as a new version in a collection that you own on the target platform by assigning the collection identifier such as `1234567` to `collection`. You can find the collection identifier via Zenodo's frontend as the last part of the DOI listed under _Cite all versions?_ in the sidebar.
+
+### `compression`
+
+- default value: `zip`
+- choices: `zip` | `tar.gz`
+- overruled by `filenames`
+
+Which compression to use when making a snapshot of the entire repository.
+
+### `filenames`
+
+- overrules argument `compression`
+
+List of space-separated filenames that should be uploaded separately instead of the default behavior of uploading a snapshot of the entire repository as an archive.
+
+### `metadata`
+
+Used to specify which file holds the metadata to be associated with the deposition. The metadata file should be a valid JSON file in Zenodo metadata format.
+
+### `publish`
+
+- default value: `false`
+
+Whether to automate finalizing the draft deposition as part of the automation (`publish: true`), or to leave it to the user to click `Publish` manually after inspecting the draft deposition on the respective platform (`publish: false`).
+
+### `upsert-doi`
+
+- default value: `false`
+- requires: `upsert-location`
+
+If `true`, update the citation metadata file CITATION.cff with the draft deposition's prereserved doi before uploading any files to Zenodo or Zenodo Sandbox.
+
+### `upsert-location`
+
+- choices: `doi` | `identifiers` | `identifiers[i]`
+- only relevant when `upsert-doi` is `true`
+
+Where to insert the prereserved doi value in CITATION.cff. Valid options are `doi`, `identifiers`, or `identifiers[i]`, where `i` should be replaced with an integer index into the array `identifiers`.
+
+### `sandbox`
+
+- default value: `true`
+
+Whether to create the draft deposition on Zenodo  (`sandbox: false`; production) or Zenodo Sandbox  (`sandbox: true`; testing and development).
 
 ## Access tokens & repository secrets
 
