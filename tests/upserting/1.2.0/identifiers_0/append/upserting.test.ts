@@ -29,7 +29,7 @@ test('upserting a doi',() => {
     const upsert_location = 'identifiers'
     const prereserved_doi = '10.5281/upserted.1234567'
 
-    upsert_prereserved_doi(upsert_doi, upsert_location, prereserved_doi)
+    upsert_prereserved_doi(upsert_location, prereserved_doi)
 
     const actual = fs.readFileSync('CITATION.cff', 'utf8')
     const expected = fs.readFileSync('expected.yml', 'utf8')

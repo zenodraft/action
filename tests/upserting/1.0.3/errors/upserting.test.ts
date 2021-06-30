@@ -30,7 +30,7 @@ test('upserting a doi',() => {
     const prereserved_doi = '10.5281/upserted.1234567'
 
     const throwfun = () => {
-        upsert_prereserved_doi(upsert_doi, upsert_location, prereserved_doi)
+        upsert_prereserved_doi(upsert_location, prereserved_doi)
     }
     expect(throwfun).toThrow(AssertionError)
     try {
