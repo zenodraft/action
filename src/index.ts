@@ -1,18 +1,21 @@
 import {getInput,setFailed} from '@actions/core';
 import {exec} from '@actions/exec';
 import zenodraft from 'zenodraft'
+import { upsert_prereserved_doi } from './upserting'
 
 
 export const main = async (): Promise<void> => {
 
     try {
-        const collection_id = getInput('collection');
-        const compression = getInput('compression');
-        const filenames = getInput('filenames');
-        const metadata = getInput('metadata');
-        const publish = getInput('publish') === 'true' ? true : false;
-        const sandbox = getInput('sandbox') === 'false' ? false : true;
-        const verbose = false;
+        const collection_id = getInput('collection')
+        const compression = getInput('compression')
+        const filenames = getInput('filenames')
+        const metadata = getInput('metadata')
+        const publish = getInput('publish') === 'true' ? true : false
+        const sandbox = getInput('sandbox') === 'false' ? false : true
+        const upsert_doi = getInput('upsert-doi') === 'true' ? true : false
+        const upsert_location = getInput('upsert-location')
+        const verbose = false
 
         // create the deposition as a new version in a new collection or
         // as a new version in an existing collection:
@@ -21,6 +24,11 @@ export const main = async (): Promise<void> => {
             latest_id = await zenodraft.deposition_create_in_new_collection(sandbox, verbose)
         } else {
             latest_id = await zenodraft.deposition_create_in_existing_collection(sandbox, collection_id, verbose)
+        }
+
+        if (upsert_doi === true) {
+            const prereserved_doi = await zenodraft.deposition_show_prereserved(sandbox, latest_id, verbose)
+            upsert_prereserved_doi(upsert_location, prereserved_doi)
         }
 
         // upload only the files specified in the filenames argument, or

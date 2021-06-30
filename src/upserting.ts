@@ -77,11 +77,7 @@ const supports_identifiers_key = (cff: CffObject): boolean => {
 
 
 
-export const upsert_prereserved_doi = (upsert_doi: boolean, upsert_location: string, prereserved_doi: string): void => {
-
-    if (upsert_doi === false) {
-        return
-    }
+export const upsert_prereserved_doi = (upsert_location: string, prereserved_doi: string): void => {
 
     const cff = load_cff_file()
 
