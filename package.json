@@ -9,7 +9,7 @@
     "@actions/github": "^5.0.0",
     "js-yaml": "^4.1.0",
     "typescript": "^4.3.2",
-    "zenodraft": "git+https://github.com/zenodraft/zenodraft.git#0.8.0"
+    "zenodraft": "git+https://github.com/zenodraft/zenodraft.git#0.9.0"
   },
   "description": "GitHub action to automate making draft depositions on Zenodo or Zenodo Sandbox",
   "homepage": "https://github.com/zenodraft/action#readme",
@@ -33,7 +33,7 @@
     "test": "jest --config jest.config.js",
     "transpile": "tsc -p tsconfig.json"
   },
-  "version": "0.8.0",
+  "version": "0.9.0",
   "devDependencies": {
     "@types/jest": "^26.0.23",
     "@types/js-yaml": "^4.0.1",
