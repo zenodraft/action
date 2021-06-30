@@ -34,7 +34,7 @@ jobs:
                 from repository file .zenodo.json
           env:
             ZENODO_SANDBOX_ACCESS_TOKEN: ${{ secrets.ZENODO_SANDBOX_ACCESS_TOKEN }}
-          uses: zenodraft/action@0.7.1
+          uses: zenodraft/action@0.9.0
           with:
             collection: 1234567
             metadata: .zenodo.json
