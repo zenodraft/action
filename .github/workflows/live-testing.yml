@@ -72,3 +72,6 @@ jobs:
             upsert-doi: true
             upsert-location: identifiers
             metadata: .github/.zenodo-upserting.json
+            filenames: CITATION.cff
+        - name: check CITATION.cff
+          run: cat CITATION.cff
