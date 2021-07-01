@@ -3,8 +3,6 @@ import { getInput,setFailed } from '@actions/core'
 import { get_payload } from './releasing'
 import { update_github_state } from './releasing'
 import { upsert_prereserved_doi } from './upserting'
-import * as github from '@actions/github'
-import assert from 'assert'
 import zenodraft from 'zenodraft'
 
 
