@@ -1,7 +1,10 @@
 import { exec } from '@actions/exec'
 import { getInput,setFailed } from '@actions/core'
+import { get_payload } from './releasing'
 import { update_github_state } from './releasing'
 import { upsert_prereserved_doi } from './upserting'
+import * as github from '@actions/github'
+import assert from 'assert'
 import zenodraft from 'zenodraft'
 
 
@@ -9,6 +12,7 @@ import zenodraft from 'zenodraft'
 export const main = async (): Promise<void> => {
 
     try {
+
         const collection_id = getInput('collection')
         const compression = getInput('compression')
         const filenames = getInput('filenames')
@@ -18,6 +22,10 @@ export const main = async (): Promise<void> => {
         const upsert_doi = getInput('upsert-doi') === 'true' ? true : false
         const upsert_location = getInput('upsert-location')
         const verbose = false
+
+        const payload = get_payload()
+        const msg = `Unsupported event: "${github.context.eventName}".`
+        assert(payload.event === 'workflow_dispatch', msg)
 
         // create the deposition as a new version in a new collection or
         // as a new version in an existing collection:

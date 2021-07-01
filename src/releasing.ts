@@ -36,7 +36,7 @@ const create_github_release = (payload: WorkflowDispatchEvent): void => {
 
 
 
-const get_payload = (): Payload  => {
+export const get_payload = (): Payload  => {
 
     if (github.context.eventName === 'workflow_dispatch') {
         return {
