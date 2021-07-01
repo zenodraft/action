@@ -1,7 +1,12 @@
-import * as yaml from 'js-yaml'
-import * as fs from 'fs'
-import assert from 'assert'
 import { AssertionError } from 'assert'
+import { exec } from '@actions/exec'
+import { WorkflowDispatchEvent, ReleaseEvent, ReleasePublishedEvent } from '@octokit/webhooks-definitions/schema'
+import * as core from '@actions/core'
+import * as fs from 'fs'
+import * as github from '@actions/github'
+import * as yaml from 'js-yaml'
+import assert from 'assert'
+
 
 
 type Identifier = {
@@ -61,6 +66,38 @@ const load_cff_file = (): CffObject => {
 
 
 
+const push_changes_from_upsert = async (): Promise<void> => {
+    await exec('git', ['add', 'CITATION.cff'])
+    await exec('git', ['commit', '-m', 'zenodraft updated the file CITATION.cff with the prereserved doi'])
+    await exec('git', ['push'])
+}
+
+
+
+const show_github_payload = (): void => {
+
+    if (github.context.eventName === 'workflow_dispatch') {
+        const payload = github.context.payload as WorkflowDispatchEvent
+        workflow_dispatch_eventhandler(payload)
+        return
+    }
+
+    if (github.context.eventName === 'release') {
+        const release_event_payload = github.context.payload as ReleaseEvent
+        if (release_event_payload.action === 'published') {
+            release_published_eventhandler(release_event_payload as ReleasePublishedEvent)
+            return
+        } else {
+            core.setFailed(`Unsupported type of release event: "${release_event_payload.action}".`)
+            return
+        }
+    }
+    core.setFailed(`Unsupported event: "${github.context.eventName}".`)
+    return
+}
+
+
+
 const supports_identifiers_description_key = (cff: CffObject): boolean => {
     const cff_version = cff['cff-version'] || ''
     const versions = ['1.2.0']
@@ -77,7 +114,15 @@ const supports_identifiers_key = (cff: CffObject): boolean => {
 
 
 
-export const upsert_prereserved_doi = (upsert_location: string, prereserved_doi: string): void => {
+const release_published_eventhandler = (payload: ReleasePublishedEvent): void => {
+    core.info(JSON.stringify(payload, null, 4))
+    // get the tag from the release
+
+}
+
+
+
+export const upsert_prereserved_doi = async (upsert_location: string, prereserved_doi: string): Promise<void> => {
 
     const cff = load_cff_file()
 
@@ -129,16 +174,20 @@ export const upsert_prereserved_doi = (upsert_location: string, prereserved_doi:
     }
 
     write_cff_file(cff)
+    await push_changes_from_upsert()
+    show_github_payload()
+}
 
-    // use octokit to do the equivalent of
-    // git add CITATION.cff
-    // git commit -m "updated the CITATION.cff with prereserved doi"
-    // git push 
 
-    // if workflow was triggered by published | created | updated a prerelease | release event:
-    // use octokit to
-    // move tag to new commit
-    // move release to new commit
+
+const workflow_dispatch_eventhandler = (payload: WorkflowDispatchEvent): void => {
+    core.info(JSON.stringify(payload, null, 4))
+
+    // determine what the tag value should be
+    // determine what sha is going to be released
+    // create the tag for the sha
+    // create the release
+
 }
 
 

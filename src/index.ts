@@ -1,8 +1,7 @@
-import {getInput,setFailed} from '@actions/core';
-import {exec} from '@actions/exec';
+import {getInput,setFailed} from '@actions/core'
+import {exec} from '@actions/exec'
 import zenodraft from 'zenodraft'
 import { upsert_prereserved_doi } from './upserting'
-import { show_github_payload } from './github'
 
 
 export const main = async (): Promise<void> => {
@@ -29,32 +28,31 @@ export const main = async (): Promise<void> => {
 
         if (upsert_doi === true) {
             const prereserved_doi = await zenodraft.deposition_show_prereserved(sandbox, latest_id, verbose)
-            upsert_prereserved_doi(upsert_location, prereserved_doi)
-            show_github_payload()
+            await upsert_prereserved_doi(upsert_location, prereserved_doi)
         }
 
         // upload only the files specified in the filenames argument, or
         // upload a snapshot of the complete repository
         if (filenames === '') {
             if (compression === 'tar.gz') {
-                await exec('touch', ['archive.tar.gz']);
-                await exec('tar', ['--exclude=.git', '--exclude=archive.tar.gz', '-zcvf', 'archive.tar.gz', '.']);
-                await zenodraft.file_add(sandbox, latest_id, 'archive.tar.gz', verbose);
+                await exec('touch', ['archive.tar.gz'])
+                await exec('tar', ['--exclude=.git', '--exclude=archive.tar.gz', '-zcvf', 'archive.tar.gz', '.'])
+                await zenodraft.file_add(sandbox, latest_id, 'archive.tar.gz', verbose)
             } else if (compression === 'zip') {
-                await exec('zip', ['-r', '-x', '/.git*', '-v', 'archive.zip', '.']);
-                await zenodraft.file_add(sandbox, latest_id, 'archive.zip', verbose);
+                await exec('zip', ['-r', '-x', '/.git*', '-v', 'archive.zip', '.'])
+                await zenodraft.file_add(sandbox, latest_id, 'archive.zip', verbose)
             } else {
                 throw new Error('Unknown compression method.')
             }
         } else {
             for (const filename of filenames.split(' ')) {
-                await zenodraft.file_add(sandbox, latest_id, filename, verbose);
+                await zenodraft.file_add(sandbox, latest_id, filename, verbose)
             }
         }
 
         // update the metadata if the user has specified a filename that contains metadata
         if (metadata !== '') {
-            await zenodraft.metadata_update(sandbox, latest_id, metadata, verbose);
+            await zenodraft.metadata_update(sandbox, latest_id, metadata, verbose)
         }
 
         if (publish === true) {
@@ -62,7 +60,7 @@ export const main = async (): Promise<void> => {
         }
 
     } catch (error) {
-        setFailed(error.message);
+        setFailed(error.message)
     }
 }
 
