@@ -24,6 +24,29 @@ type CffObject = {
 }
 
 
+type Payload = {
+    event: 'workflow_dispatch'
+    contents: WorkflowDispatchEvent
+} | {
+    event: 'release_published'
+    contents: ReleasePublishedEvent
+}
+
+
+
+const create_github_release = (payload: WorkflowDispatchEvent): void => {
+    core.info(JSON.stringify(payload, null, 4))
+    const github_token = core.getInput('github_token')
+    const octokit = github.getOctokit(github_token)
+    console.info(octokit)
+    // determine what the tag value should be
+    // determine what sha is going to be released
+    // create the tag for the sha
+    // create the release
+
+}
+
+
 
 const has_cff_version_key = (cff: CffObject): boolean => {
     return Object.keys(cff).includes('cff-version')
@@ -76,26 +99,40 @@ const push_changes_from_upsert = async (): Promise<void> => {
 
 
 
-const show_github_payload = (): void => {
+const get_payload = (): Payload  => {
 
     if (github.context.eventName === 'workflow_dispatch') {
-        const payload = github.context.payload as WorkflowDispatchEvent
-        workflow_dispatch_eventhandler(payload)
-        return
+        return {
+            event: 'workflow_dispatch',
+            contents: github.context.payload as WorkflowDispatchEvent
+        }
     }
 
     if (github.context.eventName === 'release') {
         const release_event_payload = github.context.payload as ReleaseEvent
         if (release_event_payload.action === 'published') {
-            release_published_eventhandler(release_event_payload as ReleasePublishedEvent)
-            return
+            return {
+                event: 'release_published',
+                contents: release_event_payload as ReleasePublishedEvent
+            }
         } else {
-            core.setFailed(`Unsupported type of release event: "${release_event_payload.action}".`)
-            return
+            const msg = `Unsupported type of release event: "${release_event_payload.action}".`
+            core.setFailed(msg)
+            throw new Error(msg)
         }
     }
-    core.setFailed(`Unsupported event: "${github.context.eventName}".`)
-    return
+    const msg = `Unsupported event: "${github.context.eventName}".`
+    core.setFailed(msg)
+    throw new Error(msg)
+}
+
+
+
+const move_git_tag = (payload: ReleasePublishedEvent): void => {
+    core.info(JSON.stringify(payload, null, 4))
+    // get the tag from the release
+    // const tag_name = payload.release.tag_name
+
 }
 
 
@@ -112,14 +149,6 @@ const supports_identifiers_key = (cff: CffObject): boolean => {
     const cff_version = cff['cff-version'] || ''
     const versions = ['1.1.0', '1.2.0']
     return versions.includes(cff_version)
-}
-
-
-
-const release_published_eventhandler = (payload: ReleasePublishedEvent): void => {
-    core.info(JSON.stringify(payload, null, 4))
-    // get the tag from the release
-
 }
 
 
@@ -177,19 +206,15 @@ export const upsert_prereserved_doi = async (upsert_location: string, prereserve
 
     write_cff_file(cff)
     await push_changes_from_upsert()
-    show_github_payload()
-}
 
-
-
-const workflow_dispatch_eventhandler = (payload: WorkflowDispatchEvent): void => {
-    core.info(JSON.stringify(payload, null, 4))
-
-    // determine what the tag value should be
-    // determine what sha is going to be released
-    // create the tag for the sha
-    // create the release
-
+    const payload = get_payload()
+    if (payload.event === 'release_published') {
+        move_git_tag(payload.contents)
+    } else if (payload.event === 'workflow_dispatch') {
+        create_github_release(payload.contents)
+    } else {
+        throw new Error(`Unsupported event: "${github.context.eventName}".`)
+    }
 }
 
 
