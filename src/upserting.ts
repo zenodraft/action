@@ -67,8 +67,10 @@ const load_cff_file = (): CffObject => {
 
 
 const push_changes_from_upsert = async (): Promise<void> => {
+    await exec('git', ['config', 'user.email', ''])
+    await exec('git', ['config', 'user.name', 'zenodraft/action'])
     await exec('git', ['add', 'CITATION.cff'])
-    await exec('git', ['commit', '-m', 'zenodraft updated the file CITATION.cff with the prereserved doi'])
+    await exec('git', ['commit', '-m', 'zenodraft/action updated the file CITATION.cff with the prereserved doi'])
     await exec('git', ['push'])
 }
 
