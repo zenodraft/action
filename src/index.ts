@@ -1,7 +1,9 @@
-import {getInput,setFailed} from '@actions/core'
-import {exec} from '@actions/exec'
-import zenodraft from 'zenodraft'
+import { exec } from '@actions/exec'
+import { getInput,setFailed } from '@actions/core'
+import { update_github_state } from './releasing'
 import { upsert_prereserved_doi } from './upserting'
+import zenodraft from 'zenodraft'
+
 
 
 export const main = async (): Promise<void> => {
@@ -58,6 +60,8 @@ export const main = async (): Promise<void> => {
         if (publish === true) {
             await zenodraft.deposition_publish(sandbox, latest_id, verbose)
         }
+
+        update_github_state()
 
     } catch (error) {
         setFailed(error.message)
