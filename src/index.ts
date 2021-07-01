@@ -2,6 +2,7 @@ import {getInput,setFailed} from '@actions/core';
 import {exec} from '@actions/exec';
 import zenodraft from 'zenodraft'
 import { upsert_prereserved_doi } from './upserting'
+import { show_github_payload } from './github'
 
 
 export const main = async (): Promise<void> => {
@@ -29,6 +30,7 @@ export const main = async (): Promise<void> => {
         if (upsert_doi === true) {
             const prereserved_doi = await zenodraft.deposition_show_prereserved(sandbox, latest_id, verbose)
             upsert_prereserved_doi(upsert_location, prereserved_doi)
+            show_github_payload()
         }
 
         // upload only the files specified in the filenames argument, or
