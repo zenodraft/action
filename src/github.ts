@@ -8,6 +8,6 @@ export const show_github_payload = (): void => {
         const payload = github.context.payload as WorkflowDispatchEvent
         core.info(JSON.stringify(payload, null, 4))
     } else {
-        core.info('unsupported event')
+        core.info(`unsupported event: ${github.context.eventName}`)
     }
 }
