@@ -39,12 +39,18 @@ const create_github_release = (payload: WorkflowDispatchEvent): void => {
     const github_token = process.env.GITHUB_TOKEN
     assert(github_token !== undefined, 'I don\'t see the GITHUB_TOKEN in the environment.')
     const octokit = github.getOctokit(github_token)
-    console.info(octokit)
+
+    const [owner, repo] = payload.repository.full_name.split('/').slice(0, 2)
+    const tag_name = 'version'
+    const options = {
+        name: tag_name,
+        body: 'zenodraft automated release triggered by workflow_dispatch event'
+    }
+    octokit.rest.repos.createRelease({owner, repo, tag_name, ...options})
     // determine what the tag value should be
     // determine what sha is going to be released
     // create the tag for the sha
     // create the release
-
 }
 
 
