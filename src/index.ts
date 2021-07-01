@@ -24,8 +24,6 @@ export const main = async (): Promise<void> => {
         const verbose = false
 
         const payload = get_payload()
-        const msg = `Unsupported event: "${github.context.eventName}".`
-        assert(payload.event === 'workflow_dispatch', msg)
 
         // create the deposition as a new version in a new collection or
         // as a new version in an existing collection:

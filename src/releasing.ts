@@ -1,4 +1,4 @@
-import { WorkflowDispatchEvent, ReleaseEvent, ReleasePublishedEvent } from '@octokit/webhooks-definitions/schema'
+import { WorkflowDispatchEvent, ReleaseEvent, ReleaseCreatedEvent } from '@octokit/webhooks-definitions/schema'
 import * as core from '@actions/core'
 import * as github from '@actions/github'
 import assert from 'assert'
@@ -9,8 +9,8 @@ type Payload = {
     event: 'workflow_dispatch'
     contents: WorkflowDispatchEvent
 } | {
-    event: 'release_published'
-    contents: ReleasePublishedEvent
+    event: 'release_created'
+    contents: ReleaseCreatedEvent
 }
 
 
@@ -47,10 +47,10 @@ export const get_payload = (): Payload  => {
 
     if (github.context.eventName === 'release') {
         const release_event_payload = github.context.payload as ReleaseEvent
-        if (release_event_payload.action === 'published') {
+        if (release_event_payload.action === 'created') {
             return {
-                event: 'release_published',
-                contents: release_event_payload as ReleasePublishedEvent
+                event: 'release_created',
+                contents: release_event_payload as ReleaseCreatedEvent
             }
         } else {
             const msg = `Unsupported type of release event: "${release_event_payload.action}".`
@@ -71,7 +71,7 @@ const get_version_from_zenodo_metadata = (): string => {
 
 
 
-const move_git_tag = (payload: ReleasePublishedEvent): void => {
+const move_git_tag = (payload: ReleaseCreatedEvent): void => {
     core.info(JSON.stringify(payload, null, 4))
     // get the tag from the release
     // const tag_name = payload.release.tag_name
@@ -82,7 +82,7 @@ const move_git_tag = (payload: ReleasePublishedEvent): void => {
 
 export const update_github_state = () => {
     const payload = get_payload()
-    if (payload.event === 'release_published') {
+    if (payload.event === 'release_created') {
         move_git_tag(payload.contents)
     } else if (payload.event === 'workflow_dispatch') {
         create_github_release(payload.contents)
