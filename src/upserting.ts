@@ -36,7 +36,7 @@ type Payload = {
 
 const create_github_release = (payload: WorkflowDispatchEvent): void => {
     core.info(JSON.stringify(payload, null, 4))
-    const github_token = core.getInput('github_token')
+    const github_token = core.getInput('GITHUB_TOKEN')
     const octokit = github.getOctokit(github_token)
     console.info(octokit)
     // determine what the tag value should be
