@@ -116,13 +116,15 @@ export const get_payload = (filename: string): Payload  => {
 
 
 const move_git_tag = async (payload: ReleasePublishedPayload, upsert_doi: boolean): Promise<void> => {
+
     if (upsert_doi === true) {
+        
+        const [owner, repo] = payload.contents.repository.full_name.split('/').slice(0, 2)
+        const release_id = payload.contents.release.id
+        const target_commitish = payload.contents.release.target_commitish
+        const tag_name = payload.contents.release.tag_name
 
         // https://gist.github.com/danielestevez/2044589
-
-        const tag_name = payload.contents.release.tag_name
-        const target_commitish = payload.contents.release.target_commitish
-
         await core.group('updating the tag with changes that resulted from upserting the prereserved doi', async () => {
             await exec('git', ['fetch', 'origin'])
             await exec('git', ['config', 'user.email', ''])
@@ -130,14 +132,12 @@ const move_git_tag = async (payload: ReleasePublishedPayload, upsert_doi: boolea
             await exec('git', ['checkout', '-b', `${tag_name}-with-upserting-changes`])
             await exec('git', ['add', 'CITATION.cff'])
             await exec('git', ['commit', '-m', 'zenodraft/action updated the file CITATION.cff with the prereserved doi'])
-            await exec('git', ['tag', '-d', tag_name])
-            await exec('git', ['tag', tag_name])
-            await exec('git', ['push', 'origin', `:${tag_name}`])
-            await exec('git', ['push', 'origin', `${tag_name}`])
             await exec('git', ['checkout', target_commitish])
-            await exec('git', ['merge', tag_name])
-            await exec('git', ['push', 'origin', target_commitish])            
+            await exec('git', ['merge', `${tag_name}-with-upserting-changes`])
+            await exec('git', ['push', 'origin', target_commitish])
         })
+
+        get_octokit().rest.repos.updateRelease({owner, repo, release_id, target_commitish})
     }
 }
 
