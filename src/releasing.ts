@@ -115,17 +115,33 @@ export const get_payload = (filename: string): Payload  => {
 
 
 
-const move_git_tag = (payload: ReleasePublishedPayload): void => {
-    core.info('releasing.ts :: move_git_tag(), not implemented yet')
-    // get the tag from the release
-    // const tag_name = payload.release.tag_name
+const move_git_tag = async (payload: ReleasePublishedPayload, upsert_doi: boolean): Promise<void> => {
+    if (upsert_doi === true) {
+
+        // https://gist.github.com/danielestevez/2044589
+
+        const tag_name = payload.contents.release.tag_name
+        const target_commitish = payload.contents.release.target_commitish
+
+        await core.group('updating the tag with changes that resulted from upserting the prereserved doi', async () => {
+            await exec('git', ['config', 'user.email', ''])
+            await exec('git', ['config', 'user.name', 'zenodraft/action'])
+            await exec('git', ['checkout', target_commitish])
+            await exec('git', ['add', 'CITATION.cff'])
+            await exec('git', ['commit', '-m', 'zenodraft/action updated the file CITATION.cff with the prereserved doi'])
+            await exec('git', ['tag', '-d', tag_name])
+            await exec('git', ['tag', tag_name])
+            await exec('git', ['push', 'origin', `:${tag_name}`])
+            await exec('git', ['push', 'origin', `${tag_name}`])
+        })
+    }
 }
 
 
 
 export const update_github_state = async (payload: Payload, upsert_doi: boolean) => {
     if (payload.event === 'ReleasePublished') {
-        move_git_tag(payload)
+        await move_git_tag(payload, upsert_doi)
     } else if (payload.event === 'WorkflowDispatch') {
         await create_github_release(payload, upsert_doi)
     } else {
