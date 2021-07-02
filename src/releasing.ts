@@ -137,7 +137,7 @@ const move_git_tag = async (payload: ReleasePublishedPayload, upsert_doi: boolea
             await exec('git', ['push', 'origin', target_commitish])
         })
 
-        get_octokit().rest.repos.updateRelease({owner, repo, release_id, target_commitish})
+        get_octokit().rest.repos.deleteRelease({owner, repo, release_id})
     }
 }
 
