@@ -142,9 +142,10 @@ const move_git_tag = async (payload: ReleasePublishedPayload, upsert_doi: boolea
             await exec('git', ['checkout', target_commitish])
             await exec('git', ['merge', `${tag_name}-with-upserting-changes`])
             await exec('git', ['push', 'origin', target_commitish])
-            await exec('git', ['push', 'origin', `:${tag_name}`])
             await exec('git', ['tag', '-d', tag_name])
-            
+            await exec('git', ['push', 'origin', `:${tag_name}`])
+            await exec('git', ['fetch', '--tags'])
+            await exec('sleep', ['10'])
         })
 
         const octokit = get_octokit()
