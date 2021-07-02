@@ -1,4 +1,4 @@
-import { WorkflowDispatchEvent, ReleaseEvent, ReleaseReleasedEvent } from '@octokit/webhooks-definitions/schema'
+import { WorkflowDispatchEvent, ReleaseEvent, ReleaseCreatedEvent } from '@octokit/webhooks-definitions/schema'
 import * as core from '@actions/core'
 import * as github from '@actions/github'
 import assert from 'assert'
@@ -6,11 +6,11 @@ import assert from 'assert'
 
 
 type Payload = {
-    event: 'workflow_dispatch'
+    event: 'WorkflowDispatch'
     contents: WorkflowDispatchEvent
 } | {
-    event: 'released'
-    contents: ReleaseReleasedEvent
+    event: 'ReleaseCreated'
+    contents: ReleaseCreatedEvent
 }
 
 
@@ -40,17 +40,17 @@ export const get_payload = (): Payload  => {
 
     if (github.context.eventName === 'workflow_dispatch') {
         return {
-            event: 'workflow_dispatch',
+            event: 'WorkflowDispatch',
             contents: github.context.payload as WorkflowDispatchEvent
         }
     }
 
     if (github.context.eventName === 'release') {
         let payload = github.context.payload as ReleaseEvent
-        if (payload.action === 'released') {
+        if (payload.action === 'created') {
             return {
-                event: 'released',
-                contents: payload as ReleaseReleasedEvent
+                event: 'ReleaseCreated',
+                contents: payload as ReleaseCreatedEvent
             }
         } else {
             const msg = `Unsupported type of release event: "${payload.action}".`
@@ -72,7 +72,7 @@ const get_version_from_zenodo_metadata = (): string => {
 
 
 
-const move_git_tag = (payload: ReleaseReleasedEvent): void => {
+const move_git_tag = (payload: ReleaseCreatedEvent): void => {
     core.info('releasing.ts :: move_git_tag(), not implemented yet')
     core.group('ReleasedEvent payload', async () => {core.info(JSON.stringify(payload, null, 4))})
     // get the tag from the release
@@ -82,9 +82,9 @@ const move_git_tag = (payload: ReleaseReleasedEvent): void => {
 
 
 export const update_github_state = (payload: Payload) => {
-    if (payload.event === 'released') {
+    if (payload.event === 'ReleaseCreated') {
         move_git_tag(payload.contents)
-    } else if (payload.event === 'workflow_dispatch') {
+    } else if (payload.event === 'WorkflowDispatch') {
         create_github_release(payload.contents)
     } else {
         throw new Error(`Unsupported event: "${github.context.eventName}".`)
