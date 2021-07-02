@@ -37,11 +37,13 @@ const create_github_release = async (payload: WorkflowDispatchPayload, upsert_do
         target_commitish: payload.contents.ref
     }
     if (upsert_doi === true) {
-        await exec('git', ['config', 'user.email', ''])
-        await exec('git', ['config', 'user.name', 'zenodraft/action'])
-        await exec('git', ['add', 'CITATION.cff'])
-        await exec('git', ['commit', '-m', 'zenodraft/action updated the file CITATION.cff with the prereserved doi'])
-        await exec('git', ['push'])
+        core.group('updating the branch with changes that resulted from upserting the prereserved doi', async () => {
+            await exec('git', ['config', 'user.email', ''])
+            await exec('git', ['config', 'user.name', 'zenodraft/action'])
+            await exec('git', ['add', 'CITATION.cff'])
+            await exec('git', ['commit', '-m', 'zenodraft/action updated the file CITATION.cff with the prereserved doi'])
+            await exec('git', ['push'])
+        })
     }
     get_octokit().rest.repos.createRelease({owner, repo, tag_name: payload.tag, ...options})
 }

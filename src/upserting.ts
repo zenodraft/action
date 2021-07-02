@@ -1,5 +1,4 @@
 import { AssertionError } from 'assert'
-import { exec } from '@actions/exec'
 import * as fs from 'fs'
 import * as yaml from 'js-yaml'
 import assert from 'assert'
@@ -80,7 +79,7 @@ const supports_identifiers_key = (cff: CffObject): boolean => {
 
 
 
-export const upsert_prereserved_doi = async (upsert_location: string, prereserved_doi: string): Promise<void> => {
+export const upsert_prereserved_doi = (upsert_location: string, prereserved_doi: string): void => {
 
     const cff = load_cff_file()
 
