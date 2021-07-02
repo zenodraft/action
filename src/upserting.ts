@@ -64,16 +64,6 @@ export const load_cff_file = (): CffObject => {
 
 
 
-const push_changes_from_upsert = async (): Promise<void> => {
-    await exec('git', ['config', 'user.email', ''])
-    await exec('git', ['config', 'user.name', 'zenodraft/action'])
-    await exec('git', ['add', 'CITATION.cff'])
-    await exec('git', ['commit', '-m', 'zenodraft/action updated the file CITATION.cff with the prereserved doi'])
-    await exec('git', ['push'])
-}
-
-
-
 const supports_identifiers_description_key = (cff: CffObject): boolean => {
     const cff_version = cff['cff-version'] || ''
     const versions = ['1.2.0']
@@ -142,7 +132,6 @@ export const upsert_prereserved_doi = async (upsert_location: string, prereserve
     }
 
     write_cff_file(cff)
-    await push_changes_from_upsert()
 }
 
 

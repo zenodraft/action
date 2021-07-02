@@ -66,7 +66,7 @@ export const main = async (): Promise<void> => {
             await zenodraft.deposition_publish(sandbox, latest_id, verbose)
         }
 
-        update_github_state(payload)
+        await update_github_state(payload, upsert_doi)
 
     } catch (error) {
         setFailed(error.message)

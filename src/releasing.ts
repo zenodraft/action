@@ -1,3 +1,4 @@
+import { exec } from '@actions/exec'
 import { WorkflowDispatchEvent, ReleaseEvent, ReleasePublishedEvent } from '@octokit/webhooks-definitions/schema'
 import * as core from '@actions/core'
 import * as github from '@actions/github'
@@ -28,12 +29,19 @@ const get_octokit = () => {
 }
 
 
-const create_github_release = (payload: WorkflowDispatchPayload): void => {
+const create_github_release = async (payload: WorkflowDispatchPayload, upsert_doi: boolean): Promise<void> => {
     const [owner, repo] = payload.contents.repository.full_name.split('/').slice(0, 2)
     const options = {
         name: payload.tag,
         body: 'zenodraft automated release triggered by workflow_dispatch event',
         target_commitish: payload.contents.ref
+    }
+    if (upsert_doi === true) {
+        await exec('git', ['config', 'user.email', ''])
+        await exec('git', ['config', 'user.name', 'zenodraft/action'])
+        await exec('git', ['add', 'CITATION.cff'])
+        await exec('git', ['commit', '-m', 'zenodraft/action updated the file CITATION.cff with the prereserved doi'])
+        await exec('git', ['push'])
     }
     get_octokit().rest.repos.createRelease({owner, repo, tag_name: payload.tag, ...options})
 }
@@ -113,11 +121,11 @@ const move_git_tag = (payload: ReleasePublishedPayload): void => {
 
 
 
-export const update_github_state = (payload: Payload) => {
+export const update_github_state = async (payload: Payload, upsert_doi: boolean) => {
     if (payload.event === 'ReleasePublished') {
         move_git_tag(payload)
     } else if (payload.event === 'WorkflowDispatch') {
-        create_github_release(payload)
+        await create_github_release(payload, upsert_doi)
     } else {
         throw new Error(`Unsupported event: "${github.context.eventName}".`)
     }
