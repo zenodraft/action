@@ -124,6 +124,7 @@ const move_git_tag = async (payload: ReleasePublishedPayload, upsert_doi: boolea
         const target_commitish = payload.contents.release.target_commitish
 
         await core.group('updating the tag with changes that resulted from upserting the prereserved doi', async () => {
+            await exec('git', ['fetch', 'origin'])
             await exec('git', ['config', 'user.email', ''])
             await exec('git', ['config', 'user.name', 'zenodraft/action'])
             await exec('git', ['checkout', '-b', `${tag_name}-with-upserting-changes`])
