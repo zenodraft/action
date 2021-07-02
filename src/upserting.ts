@@ -17,7 +17,8 @@ type Identifier = {
 type CffObject = {
     'cff-version': string,
     doi?: string,
-    identifiers?: Array<Identifier>
+    identifiers?: Array<Identifier>,
+    version?: string | number
 }
 
 
@@ -28,7 +29,7 @@ const has_cff_version_key = (cff: CffObject): boolean => {
 
 
 
-const load_cff_file = (): CffObject => {
+export const load_cff_file = (): CffObject => {
     let cffstr: string
     try {
         cffstr = fs.readFileSync('CITATION.cff', 'utf8')

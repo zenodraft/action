@@ -22,7 +22,7 @@ export const main = async (): Promise<void> => {
         const verbose = false
 
         // calling this next function will throw if the triggering event is unsupported
-        const payload = validate_triggering_event()
+        const payload = validate_triggering_event(metadata)
 
         // create the deposition as a new version in a new collection or
         // as a new version in an existing collection:

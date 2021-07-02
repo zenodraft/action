@@ -1,47 +1,86 @@
 import { WorkflowDispatchEvent, ReleaseEvent, ReleasePublishedEvent } from '@octokit/webhooks-definitions/schema'
 import * as core from '@actions/core'
 import * as github from '@actions/github'
+import * as fs from 'fs'
 import assert from 'assert'
+import { load_cff_file } from './upserting'
 
-// ReleaseCreatedEvent triggers on saving a draft - not good
-// ReleasePublishedEvent triggers on ...
 
-type Payload = {
+type WorkflowDispatchPayload = {
+    contents: WorkflowDispatchEvent    
     event: 'WorkflowDispatch'
-    contents: WorkflowDispatchEvent
-} | {
-    event: 'ReleasePublished'
-    contents: ReleasePublishedEvent
+    tag: string
 }
 
+type ReleasePublishedPayload = {
+    contents: ReleasePublishedEvent
+    event: 'ReleasePublished'
+    tag: string
+}
+
+type Payload = WorkflowDispatchPayload | ReleasePublishedPayload
 
 
-const create_github_release = (payload: WorkflowDispatchEvent): void => {
+const get_octokit = () => {
     const github_token = process.env.GITHUB_TOKEN
     assert(github_token !== undefined, 'I don\'t see the GITHUB_TOKEN in the environment.')
-    const octokit = github.getOctokit(github_token)
+    return github.getOctokit(github_token)
+}
 
-    const [owner, repo] = payload.repository.full_name.split('/').slice(0, 2)
-    const tag_name = get_version_from_zenodo_metadata()
+
+const create_github_release = (payload: WorkflowDispatchPayload): void => {
+    const [owner, repo] = payload.contents.repository.full_name.split('/').slice(0, 2)
     const options = {
-        name: tag_name,
-        body: 'zenodraft automated release triggered by workflow_dispatch event'
+        name: payload.tag,
+        body: 'zenodraft automated release triggered by workflow_dispatch event',
+        target_commitish: payload.contents.ref
     }
-    octokit.rest.repos.createRelease({owner, repo, tag_name, ...options})
-    // determine what the tag value should be
-    // determine what sha is going to be released
-    // create the tag for the sha
-    // create the release
+    get_octokit().rest.repos.createRelease({owner, repo, tag_name: payload.tag, ...options})
 }
 
 
 
-export const get_payload = (): Payload  => {
+const determine_tag = (filename: string): string => {
+
+    const version_commit = ((): string => {
+        return 'qarq3w3'
+    })()
+
+    let version_cff: string | undefined
+    try {
+        version_cff = load_cff_file().version!.toString()
+    } catch (err) {
+        version_cff = undefined
+    }
+
+    let version_zenodo: string | undefined    
+    try {
+        version_zenodo = JSON.parse(fs.readFileSync(filename, 'utf8')).version!.toString()
+    }  catch (err) {
+        version_zenodo = undefined
+    }
+
+    if (version_zenodo !== undefined && version_cff !== undefined) {
+        assert(version_cff === version_zenodo, `Inconsistent versions found in CITATION.cff and ${filename}`)
+    }
+
+    if (filename === '') {
+        return version_zenodo || version_cff || version_commit
+    } else if (filename === 'CITATION.cff') {
+        return version_cff || version_commit
+    } else {
+        return version_zenodo || version_commit
+    }
+}
+
+
+export const get_payload = (filename: string): Payload  => {
     core.group('payload', async () => {core.info(JSON.stringify(github.context.payload, null, 4))})
     if (github.context.eventName === 'workflow_dispatch') {
         return {
-            event: 'WorkflowDispatch',
-            contents: github.context.payload as WorkflowDispatchEvent
+            contents: github.context.payload as WorkflowDispatchEvent,
+            event: 'WorkflowDispatch',            
+            tag: determine_tag(filename)
         }
     }
 
@@ -49,8 +88,9 @@ export const get_payload = (): Payload  => {
         let payload = github.context.payload as ReleaseEvent
         if (payload.action === 'published') {
             return {
+                contents: payload as ReleasePublishedEvent,
                 event: 'ReleasePublished',
-                contents: payload as ReleasePublishedEvent
+                tag: payload.release.tag_name
             }
         } else {
             const msg = `Unsupported type of release event: "${payload.action}".`
@@ -65,14 +105,7 @@ export const get_payload = (): Payload  => {
 
 
 
-const get_version_from_zenodo_metadata = (): string => {
-    core.info('releasing.ts :: get_version_from_zenodo_metadata(), not implemented yet')
-    return '0.0.6'
-}
-
-
-
-const move_git_tag = (payload: ReleasePublishedEvent): void => {
+const move_git_tag = (payload: ReleasePublishedPayload): void => {
     core.info('releasing.ts :: move_git_tag(), not implemented yet')
     // get the tag from the release
     // const tag_name = payload.release.tag_name
@@ -82,9 +115,9 @@ const move_git_tag = (payload: ReleasePublishedEvent): void => {
 
 export const update_github_state = (payload: Payload) => {
     if (payload.event === 'ReleasePublished') {
-        move_git_tag(payload.contents)
+        move_git_tag(payload)
     } else if (payload.event === 'WorkflowDispatch') {
-        create_github_release(payload.contents)
+        create_github_release(payload)
     } else {
         throw new Error(`Unsupported event: "${github.context.eventName}".`)
     }
