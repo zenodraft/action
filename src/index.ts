@@ -45,7 +45,7 @@ export const main = async (): Promise<void> => {
         // upload only the files specified in the filenames argument, or
         // upload a snapshot of the complete repository
         if (filenames === '') {
-            const archive_name = `${payload.contents.repository.full_name}.${compression}`
+            const archive_name = `${payload.contents.repository.name}.${compression}`
             if (compression === 'tar.gz') {
                 await exec('touch', [archive_name])
                 await exec('tar', ['--exclude=.git', `--exclude=${archive_name}`, '-zcvf', archive_name, '.'])
