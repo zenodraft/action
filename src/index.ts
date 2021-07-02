@@ -3,6 +3,7 @@ import { getInput,setFailed } from '@actions/core'
 import { get_payload as validate_triggering_event } from './releasing'
 import { update_github_state } from './releasing'
 import { upsert_prereserved_doi } from './upserting'
+import assert from 'assert'
 import zenodraft from 'zenodraft'
 
 
@@ -21,6 +22,9 @@ export const main = async (): Promise<void> => {
         const upsert_location = getInput('upsert-location')
         const verbose = false
 
+        assert(['tar.gz', 'zip'].includes(compression), 'Invalid value for input argument \'compression\'.' )
+        assert((new RegExp('[0-9]+')).test(collection_id) || collection_id === '', 'Invalid value for input argument \'collection\'.')
+
         // calling this next function will throw if the triggering event is unsupported
         const payload = validate_triggering_event(metadata)
 
@@ -35,19 +39,20 @@ export const main = async (): Promise<void> => {
 
         if (upsert_doi === true) {
             const prereserved_doi = await zenodraft.deposition_show_prereserved(sandbox, latest_id, verbose)
-            await upsert_prereserved_doi(upsert_location, prereserved_doi)
+            upsert_prereserved_doi(upsert_location, prereserved_doi)
         }
 
         // upload only the files specified in the filenames argument, or
         // upload a snapshot of the complete repository
         if (filenames === '') {
+            const archive_name = `${payload.contents.repository.full_name}.${compression}`
             if (compression === 'tar.gz') {
-                await exec('touch', ['archive.tar.gz'])
-                await exec('tar', ['--exclude=.git', '--exclude=archive.tar.gz', '-zcvf', 'archive.tar.gz', '.'])
-                await zenodraft.file_add(sandbox, latest_id, 'archive.tar.gz', verbose)
+                await exec('touch', [archive_name])
+                await exec('tar', ['--exclude=.git', `--exclude=${archive_name}`, '-zcvf', archive_name, '.'])
+                await zenodraft.file_add(sandbox, latest_id, archive_name, verbose)
             } else if (compression === 'zip') {
-                await exec('zip', ['-r', '-x', '/.git*', '-v', 'archive.zip', '.'])
-                await zenodraft.file_add(sandbox, latest_id, 'archive.zip', verbose)
+                await exec('zip', ['-r', '-x', '/.git*', '-v', archive_name, '.'])
+                await zenodraft.file_add(sandbox, latest_id, archive_name, verbose)
             } else {
                 throw new Error('Unknown compression method.')
             }
