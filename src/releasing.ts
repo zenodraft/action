@@ -123,6 +123,13 @@ const move_git_tag = async (payload: ReleasePublishedPayload, upsert_doi: boolea
         const release_id = payload.contents.release.id
         const target_commitish = payload.contents.release.target_commitish
         const tag_name = payload.contents.release.tag_name
+        const options = {
+            body: payload.contents.release.body || "",
+            draft: payload.contents.release.draft,
+            name: payload.contents.release.name || "",
+            prerelease: payload.contents.release.prerelease,
+            target_commitish: payload.contents.release.target_commitish
+        }
 
         // https://gist.github.com/danielestevez/2044589
         await core.group('updating the tag with changes that resulted from upserting the prereserved doi', async () => {
@@ -135,9 +142,15 @@ const move_git_tag = async (payload: ReleasePublishedPayload, upsert_doi: boolea
             await exec('git', ['checkout', target_commitish])
             await exec('git', ['merge', `${tag_name}-with-upserting-changes`])
             await exec('git', ['push', 'origin', target_commitish])
+            await exec('git', ['push', 'origin', `:${tag_name}`])
+            await exec('git', ['tag', '-d', tag_name])
+            
         })
 
-        get_octokit().rest.repos.deleteRelease({owner, repo, release_id})
+        const octokit = get_octokit()
+        octokit.rest.repos.deleteRelease({owner, repo, release_id})
+        octokit.rest.repos.createRelease({owner, repo, tag_name, ...options})
+
     }
 }
 
