@@ -1,6 +1,6 @@
 import { exec } from '@actions/exec'
 import { getInput,setFailed } from '@actions/core'
-import { get_payload } from './releasing'
+import { get_payload as validate_triggering_event } from './releasing'
 import { update_github_state } from './releasing'
 import { upsert_prereserved_doi } from './upserting'
 import zenodraft from 'zenodraft'
@@ -21,7 +21,8 @@ export const main = async (): Promise<void> => {
         const upsert_location = getInput('upsert-location')
         const verbose = false
 
-        const payload = get_payload()
+        // calling this next function will throw if the triggering event is unsupported
+        const payload = validate_triggering_event()
 
         // create the deposition as a new version in a new collection or
         // as a new version in an existing collection:
@@ -65,7 +66,7 @@ export const main = async (): Promise<void> => {
             await zenodraft.deposition_publish(sandbox, latest_id, verbose)
         }
 
-        update_github_state()
+        update_github_state(payload)
 
     } catch (error) {
         setFailed(error.message)

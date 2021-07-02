@@ -1,4 +1,4 @@
-import { WorkflowDispatchEvent, ReleaseEvent, ReleaseCreatedEvent } from '@octokit/webhooks-definitions/schema'
+import { WorkflowDispatchEvent, ReleaseEvent, ReleaseReleasedEvent } from '@octokit/webhooks-definitions/schema'
 import * as core from '@actions/core'
 import * as github from '@actions/github'
 import assert from 'assert'
@@ -9,14 +9,14 @@ type Payload = {
     event: 'workflow_dispatch'
     contents: WorkflowDispatchEvent
 } | {
-    event: 'release_created'
-    contents: ReleaseCreatedEvent
+    event: 'released'
+    contents: ReleaseReleasedEvent
 }
 
 
 
 const create_github_release = (payload: WorkflowDispatchEvent): void => {
-    core.info(JSON.stringify(payload, null, 4))
+    core.group('WorkflowDispatchEvent payload', async () => {core.info(JSON.stringify(payload, null, 4))})
     const github_token = process.env.GITHUB_TOKEN
     assert(github_token !== undefined, 'I don\'t see the GITHUB_TOKEN in the environment.')
     const octokit = github.getOctokit(github_token)
@@ -46,14 +46,14 @@ export const get_payload = (): Payload  => {
     }
 
     if (github.context.eventName === 'release') {
-        const release_event_payload = github.context.payload as ReleaseEvent
-        if (release_event_payload.action === 'created') {
+        let payload = github.context.payload as ReleaseEvent
+        if (payload.action === 'released') {
             return {
-                event: 'release_created',
-                contents: release_event_payload as ReleaseCreatedEvent
+                event: 'released',
+                contents: payload as ReleaseReleasedEvent
             }
         } else {
-            const msg = `Unsupported type of release event: "${release_event_payload.action}".`
+            const msg = `Unsupported type of release event: "${payload.action}".`
             core.setFailed(msg)
             throw new Error(msg)
         }
@@ -66,23 +66,23 @@ export const get_payload = (): Payload  => {
 
 
 const get_version_from_zenodo_metadata = (): string => {
+    core.info('releasing.ts :: get_version_from_zenodo_metadata(), not implemented yet')
     return '0.0.6'
 }
 
 
 
-const move_git_tag = (payload: ReleaseCreatedEvent): void => {
-    core.info(JSON.stringify(payload, null, 4))
+const move_git_tag = (payload: ReleaseReleasedEvent): void => {
+    core.info('releasing.ts :: move_git_tag(), not implemented yet')
+    core.group('ReleasedEvent payload', async () => {core.info(JSON.stringify(payload, null, 4))})
     // get the tag from the release
     // const tag_name = payload.release.tag_name
-
 }
 
 
 
-export const update_github_state = () => {
-    const payload = get_payload()
-    if (payload.event === 'release_created') {
+export const update_github_state = (payload: Payload) => {
+    if (payload.event === 'released') {
         move_git_tag(payload.contents)
     } else if (payload.event === 'workflow_dispatch') {
         create_github_release(payload.contents)
