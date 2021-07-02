@@ -32,7 +32,8 @@
     "all": "npm run clean && npm run transpile",
     "clean": "rm -f lib/*",
     "test": "jest --config jest.config.js",
-    "transpile": "tsc -p tsconfig.json"
+    "transpile": "tsc -p tsconfig.json",
+    "deps": "echo '\nupdating dependencies for production\n' && rm -rf node_modules && npm install --production && git add node_modules --force && git status"
   },
   "version": "0.9.1",
   "devDependencies": {
