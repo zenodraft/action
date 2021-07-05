@@ -10,6 +10,7 @@ Automates drafting depositions on Zenodo or Zenodo Sandbox.
 4. Publish a snapshot of the repository as a zip or tar.gz.
 5. Instead of publishing a snapshot, select a subset of files to publish.
 6. Automatically attach metadata such as title, authors, and contributors to your deposition using information from a file in your repository.
+7. Choose to upsert the prereserved DOI in the draft deposition's citation metadata file `CITATION.cff`
 
 ## Example workflow
 
