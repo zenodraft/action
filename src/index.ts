@@ -12,6 +12,7 @@ export const main = async (): Promise<void> => {
 
     try {
 
+        core.startGroup('processing user input')        
         const collection_id = core.getInput('collection')
         const compression = core.getInput('compression')
         const filenames = core.getInput('filenames')
@@ -24,25 +25,32 @@ export const main = async (): Promise<void> => {
 
         assert(['tar.gz', 'zip'].includes(compression), 'Invalid value for input argument \'compression\'.' )
         assert((new RegExp('[0-9]+')).test(collection_id) || collection_id === '', 'Invalid value for input argument \'collection\'.')
+        core.endGroup()
 
         // calling this next function will throw if the triggering event is unsupported
+        core.startGroup('payload')
         const payload = await validate_triggering_event(metadata)
+        core.endGroup()
 
         // create the deposition as a new version in a new collection or
         // as a new version in an existing collection:
+        core.startGroup('creating deposition')
         let latest_id;
         if (collection_id === '') {
             latest_id = await zenodraft.deposition_create_in_new_collection(sandbox, verbose)
         } else {
             latest_id = await zenodraft.deposition_create_in_existing_collection(sandbox, collection_id, verbose)
         }
+        core.endGroup()
 
         if (upsert_doi === true) {
+            core.startGroup('upserting doi')            
             const prereserved_doi = await zenodraft.deposition_show_prereserved(sandbox, latest_id, verbose)
             upsert_prereserved_doi(upsert_location, prereserved_doi)
+            core.endGroup()
         }
 
-        core.startGroup('Adding files')
+        core.startGroup('adding files')
         // upload only the files specified in the filenames argument, or
         // upload a snapshot of the complete repository
         if (filenames === '') {
@@ -66,14 +74,20 @@ export const main = async (): Promise<void> => {
 
         // update the metadata if the user has specified a filename that contains metadata
         if (metadata !== '') {
+            core.startGroup('adding metadata')
             await zenodraft.metadata_update(sandbox, latest_id, metadata, verbose)
+            core.endGroup() 
         }
 
         if (publish === true) {
+            core.startGroup('publishing')
             await zenodraft.deposition_publish(sandbox, latest_id, verbose)
+            core.endGroup()
         }
 
+        core.startGroup('updating github state')
         await update_github_state(payload, upsert_doi, metadata)
+        core.endGroup()
 
     } catch (error) {
         core.setFailed(error.message)
