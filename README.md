@@ -97,6 +97,13 @@ Where to insert the prereserved doi value in CITATION.cff. Valid options are `do
 
 Whether to create the draft deposition on Zenodo  (`sandbox: false`; production) or Zenodo Sandbox  (`sandbox: true`; testing and development).
 
+### `verbose`
+
+- default value: `false`
+
+Whether the logging should be verbose.
+
+
 ## Access tokens & repository secrets
 
 To use `zenodraft/action`, a personal access token is required, one for each platform you plan on using (Zenodo Sandbox, Zenodo).
