@@ -3,8 +3,5 @@ authors:
     given-names: Jurriaan H.
 cff-version: 1.1.0
 message: If you use this software, please cite it using these metadata.
-title: the title
-version: null
-identifiers:
-  - value: 10.5072/zenodo.875625
-    type: doi
+title: Zenodraft GitHub Action
+version: 0.10.0
