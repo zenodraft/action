@@ -78,7 +78,7 @@ The following workflow trigger events are supported:
     With this trigger event, you can manually start the workflow via the `Actions` tab of your repository on GitHub. Besides creating
     the deposition on Zenodo or Zenodo Sandbox, the workflow will create a new release on your repository's releases page.
 
-    The workflow will attempt to determine the release tag value from the `version` key in the file that input argument `metadata` points
+    The workflow will attempt to assign the release tag value from the `version` key in the file that input argument `metadata` points
     to, or if that hasn't been defined, from the `version` key in file `CITATION.cff` if that file exists and the key has been defined.
     If neither exists, the workflow will use the short notation of the latest commit as tag value for the release.
 
