@@ -19,13 +19,12 @@ Creates a draft snapshot of your repository contents as a new version in collect
 ```yaml
 name: zenodraft
 on:
-  # Triggers when you publish a release via GitHub's release page
+  # Trigger when you publish a release via GitHub's release page
   release:
     types:
       - published  
 
 jobs:
-
   publish:
       runs-on: ubuntu-latest
       steps:
