@@ -44,7 +44,7 @@ jobs:
             sandbox: true
 ```
 
-### Supported workflow triggers
+## Supported workflow triggers
 
 The following workflow trigger events are supported:
 
