@@ -85,9 +85,7 @@ export const main = async (): Promise<void> => {
             core.endGroup()
         }
 
-        core.startGroup('updating github state')
         await update_github_state(payload, upsert_doi, metadata)
-        core.endGroup()
 
     } catch (error) {
         core.setFailed(error.message)
