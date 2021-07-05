@@ -30,18 +30,6 @@ git status
 
 On GitHub, run test actions if need be. Then
 
-```shell
-# cd to a clean directory
-cd $(mktemp -d --tmpdir zenodraft.XXXXXX)
-
-# checkout default branch from remote
-git clone https://github.com/zenodraft/action .
-
-git status
-
-# There shouldn't be any local changes
-```
-
 ### GitHub
 
 Go to https://github.com/zenodraft/action/releases/new to make the new release.
