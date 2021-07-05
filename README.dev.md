@@ -15,8 +15,10 @@ git fetch origin
 git pull origin main
 rm -rf node_modules
 npm install --production
-git add node_modules --force
-git commit -m "production dependencies only"
+git status
+## if there are any changes,
+#  git add node_modules --force
+#  git commit -m "production dependencies only"
 npm install
 npm run all
 git status
