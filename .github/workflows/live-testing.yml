@@ -11,6 +11,7 @@ jobs:
           uses: actions/checkout@v2      
         - name: Test without any input arguments / creating a draft in a new collection
           env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             ZENODO_SANDBOX_ACCESS_TOKEN: ${{ secrets.ZENODO_SANDBOX_ACCESS_TOKEN }}        
           uses: ./
 
@@ -22,6 +23,7 @@ jobs:
           uses: actions/checkout@v2      
         - name: Test creating a draft in an existing collection
           env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             ZENODO_SANDBOX_ACCESS_TOKEN: ${{ secrets.ZENODO_SANDBOX_ACCESS_TOKEN }}        
           uses: ./
           with:
@@ -38,6 +40,7 @@ jobs:
         - run: echo "pdf contents" > test.pdf
         - name: Test with filenames
           env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             ZENODO_SANDBOX_ACCESS_TOKEN: ${{ secrets.ZENODO_SANDBOX_ACCESS_TOKEN }}        
           uses: ./
           with:
@@ -52,6 +55,7 @@ jobs:
           uses: actions/checkout@v2
         - name: Test with compression tar.gz instead of default zip
           env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             ZENODO_SANDBOX_ACCESS_TOKEN: ${{ secrets.ZENODO_SANDBOX_ACCESS_TOKEN }}        
           uses: ./
           with:
@@ -66,6 +70,7 @@ jobs:
           uses: actions/checkout@v2
         - name: Test upserting the CITATION.cff with the prereserved doi
           env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             ZENODO_SANDBOX_ACCESS_TOKEN: ${{ secrets.ZENODO_SANDBOX_ACCESS_TOKEN }}
           uses: ./
           with:
