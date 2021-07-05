@@ -19,6 +19,7 @@ jobs:
             ZENODO_ACCESS_TOKEN: ${{ secrets.ZENODO_ACCESS_TOKEN }}
           uses: zenodraft/action@0.10.0
           with:
+            collection: 5070798
             metadata: .zenodo.json
             publish: false
             sandbox: false
