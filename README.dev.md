@@ -5,7 +5,7 @@
 ### preparation
 
 
-check version numbers in README.md
+Check version numbers in `README.md`, `package.json`, `package-lock.json`.
 
 In your regular working directory
 
@@ -17,6 +17,9 @@ rm -rf node_modules
 npm install --production
 git add node_modules --force
 git commit -m "production dependencies only"
+npm install
+npm run all
+git status
 git push 
 ```
 
@@ -29,25 +32,12 @@ cd $(mktemp -d --tmpdir zenodraft.XXXXXX)
 # checkout default branch from remote
 git clone https://github.com/zenodraft/action .
 
-# install dependencies (production only)
-npm install --production
+git status
 
-# transpile
-npm run all
-
-# If there aren't any local changes, stay in this directory and proceed with the release on GitHub
+# There shouldn't be any local changes
 ```
 
 ### GitHub
 
 Go to https://github.com/zenodraft/action/releases/new to make the new release.
 
-### npm
-
-```shell
-# login if need be
-npm login
-
-# FINAL STEP: publish to the world
-npm publish
-```
