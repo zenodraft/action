@@ -22,7 +22,10 @@ git status
 npm install
 npm run all
 git status
-git push 
+## if there are any changes
+# git add thefiles
+# git commit -m "changes"
+# git push origin main
 ```
 
 On GitHub, run test actions if need be. Then
