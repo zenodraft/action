@@ -1,8 +1,8 @@
 import { exec } from '@actions/exec'
 import { getInput,setFailed } from '@actions/core'
-import { get_payload as validate_triggering_event } from './releasing'
-import { update_github_state } from './releasing'
-import { upsert_prereserved_doi } from './upserting'
+import { get_payload as validate_triggering_event } from './releasing/get_payload'
+import { update_github_state } from './releasing/update_github_state'
+import { upsert_prereserved_doi } from './upserting/upsert_prereserved_doi'
 import assert from 'assert'
 import zenodraft from 'zenodraft'
 
@@ -26,7 +26,7 @@ export const main = async (): Promise<void> => {
         assert((new RegExp('[0-9]+')).test(collection_id) || collection_id === '', 'Invalid value for input argument \'collection\'.')
 
         // calling this next function will throw if the triggering event is unsupported
-        const payload = validate_triggering_event(metadata)
+        const payload = await validate_triggering_event(metadata)
 
         // create the deposition as a new version in a new collection or
         // as a new version in an existing collection:
@@ -71,7 +71,7 @@ export const main = async (): Promise<void> => {
             await zenodraft.deposition_publish(sandbox, latest_id, verbose)
         }
 
-        await update_github_state(payload, upsert_doi)
+        await update_github_state(payload, upsert_doi, metadata)
 
     } catch (error) {
         setFailed(error.message)
