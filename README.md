@@ -48,35 +48,39 @@ jobs:
 
 The following workflow trigger events are supported:
 
-```yaml
-on:
-  release:
-    types:
-      - published  
-```
+1. Publishing a GitHub release
 
-With this trigger event, any non-draft releases and prereleases that you make via GitHub's releases page will in turn trigger
-the workflow to create a new deposition on Zenodo or Zenodo Sandbox once you press the `Publish` button.
+    ```yaml
+    on:
+      release:
+        types:
+          - published  
+    ```
 
-Editing an existing release, such as when you add an artifact to a preexisting release, or change the release notes of a
-preexisting release, do not trigger the workflow.
+    With this trigger event, any non-draft releases and prereleases that you make via GitHub's releases page will in turn trigger
+    the workflow to create a new deposition on Zenodo or Zenodo Sandbox once you press the `Publish` button.
 
-If you are using `upsert-doi` to make changes to your repository files before uploading any files to Zenodo or Zenodo Sandbox,
-those changes will be part of the deposition, and those changes will also need to be committed to the repository. This is
-why the example workflow includes the `GITHUB_TOKEN` environment variable. If you are not using `upsert-doi`, `GITHUB_TOKEN`
-is unused and may be omitted.
+    Editing an existing release, such as when you add an artifact to a preexisting release, or change the release notes of a
+    preexisting release, do not trigger the workflow.
 
-```yaml
-on:
-  workflow_dispatch:
-```
+    If you are using `upsert-doi` to make changes to your repository files before uploading any files to Zenodo or Zenodo Sandbox,
+    those changes will be part of the deposition, and those changes will also need to be committed to the repository. This is
+    why the example workflow includes the `GITHUB_TOKEN` environment variable. If you are not using `upsert-doi`, `GITHUB_TOKEN`
+    is unused and may be omitted.
 
-With this trigger event, you can manually start the workflow via the `Actions` tab of your repository on GitHub. Besides creating
-the deposition on Zenodo or Zenodo Sandbox, the workflow will create a new release on your repository's releases page.
+1. Manually triggering via the `Actions` tab
+ 
+    ```yaml
+    on:
+      workflow_dispatch:
+    ```
 
-The workflow will attempt to determine the release tag value from the `version` key in the file that input argument `metadata` points
-to, or if that hasn't been defined, from the `version` key in file `CITATION.cff` if that file exists. If neither exists, the workflow 
-will use the short notation of the latest commit as tag value for the release.
+    With this trigger event, you can manually start the workflow via the `Actions` tab of your repository on GitHub. Besides creating
+    the deposition on Zenodo or Zenodo Sandbox, the workflow will create a new release on your repository's releases page.
+
+    The workflow will attempt to determine the release tag value from the `version` key in the file that input argument `metadata` points
+    to, or if that hasn't been defined, from the `version` key in file `CITATION.cff` if that file exists and the key has been defined.
+    If neither exists, the workflow will use the short notation of the latest commit as tag value for the release.
 
 Any other events than `release published` or `workflow_dispatch` will raise an error.
 
