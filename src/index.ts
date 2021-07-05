@@ -20,7 +20,7 @@ export const main = async (): Promise<void> => {
         const sandbox = getInput('sandbox') === 'false' ? false : true
         const upsert_doi = getInput('upsert-doi') === 'true' ? true : false
         const upsert_location = getInput('upsert-location')
-        const verbose = false
+        const verbose = true
 
         assert(['tar.gz', 'zip'].includes(compression), 'Invalid value for input argument \'compression\'.' )
         assert((new RegExp('[0-9]+')).test(collection_id) || collection_id === '', 'Invalid value for input argument \'collection\'.')
