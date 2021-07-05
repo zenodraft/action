@@ -48,6 +48,24 @@ jobs:
             sandbox: true
 ```
 
+### Supported workflow triggers
+
+The following workflow trigger events are supported:
+
+```yaml
+on:
+  workflow_dispatch: 
+```
+
+```yaml
+on:
+  release:
+    types:
+      - published  
+```
+
+Other events will raise an error.
+
 ## Input parameters
 
 ### `collection`
