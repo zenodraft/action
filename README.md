@@ -22,18 +22,19 @@ on:
   # Trigger when you publish a release via GitHub's release page
   release:
     types:
-      - published  
+      - published
 
 jobs:
   publish:
       runs-on: ubuntu-latest
       steps:
-        - name: checkout
-          uses: actions/checkout@v2      
+        - name: Checkout the contents of your repository
+          uses: actions/checkout@v2
         - name: Create a draft snapshot of your repository contents as a new
                 version in collection 1234567 on Zenodo Sandbox using metadata
                 from repository file .zenodo.json
           env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             ZENODO_SANDBOX_ACCESS_TOKEN: ${{ secrets.ZENODO_SANDBOX_ACCESS_TOKEN }}
           uses: zenodraft/action@0.10.0
           with:
@@ -49,23 +50,44 @@ The following workflow trigger events are supported:
 
 ```yaml
 on:
-  workflow_dispatch: 
-```
-
-```yaml
-on:
   release:
     types:
       - published  
 ```
 
-Other events will raise an error.
+With this trigger event, any non-draft releases and prereleases that you make via GitHub's releases page will in turn trigger
+the workflow to create a new deposition on Zenodo or Zenodo Sandbox once you press the `Publish` button.
+
+Editing an existing release, such as when you add an artifact to a preexisting release, or change the release notes of a
+preexisting release, do not trigger the workflow.
+
+If you are using `upsert-doi` to make changes to your repository files before uploading any files to Zenodo or Zenodo Sandbox,
+those changes will be part of the deposition, and those changes will also need to be committed to the repository. This is
+why the example workflow includes the `GITHUB_TOKEN` environment variable. If you are not using `upsert-doi`, `GITHUB_TOKEN`
+is unused and may be omitted.
+
+```yaml
+on:
+  workflow_dispatch:
+```
+
+With this trigger event, you can manually start the workflow via the `Actions` tab of your repository on GitHub. Besides creating
+the deposition on Zenodo or Zenodo Sandbox, the workflow will create a new release on your repository's releases page.
+
+The workflow will attempt to determine the release tag value from the `version` key in the file that input argument `metadata` points
+to, or if that hasn't been defined, from the `version` key in file `CITATION.cff` if that file exists. If neither exists, the workflow 
+will use the short notation of the latest commit as tag value for the release.
+
+Any other events than `release published` or `workflow_dispatch` will raise an error.
 
 ## Input parameters
 
 ### `collection`
 
-By leaving `collection` unspecified, the draft is created as a new deposition in a new collection. Alternatively, you can have the new draft appear as a new version in a collection that you own on the target platform by assigning the collection identifier such as `1234567` to `collection`. You can find the collection identifier via Zenodo's frontend as the last part of the DOI listed under _Cite all versions?_ in the sidebar.
+By leaving `collection` unspecified, the draft is created as a new deposition in a new collection. Alternatively, you can
+have the new draft appear as a new version in a collection that you own on the target platform by assigning the collection
+identifier such as `1234567` to `collection`. You can find the collection identifier via Zenodo's frontend as the last
+part of the DOI listed under _Cite all versions?_ in the sidebar.
 
 ### `compression`
 
@@ -79,37 +101,44 @@ Which compression to use when making a snapshot of the entire repository.
 
 - overrules argument `compression`
 
-List of space-separated filenames that should be uploaded separately instead of the default behavior of uploading a snapshot of the entire repository as an archive.
+List of space-separated filenames that should be uploaded separately instead of the default behavior of
+uploading a snapshot of the entire repository as an archive.
 
 ### `metadata`
 
-Used to specify which file holds the metadata to be associated with the deposition. The metadata file should be a valid JSON file in Zenodo metadata format.
+Used to specify which file holds the metadata to be associated with the deposition. The metadata file
+should be a valid JSON file in Zenodo metadata format.
 
 ### `publish`
 
 - default value: `false`
 
-Whether to automate finalizing the draft deposition as part of the automation (`publish: true`), or to leave it to the user to click `Publish` manually after inspecting the draft deposition on the respective platform (`publish: false`).
+Whether to automate finalizing the draft deposition as part of the automation (`publish: true`), or
+to leave it to the user to click `Publish` manually after inspecting the draft deposition on the
+respective platform (`publish: false`).
 
 ### `upsert-doi`
 
 - default value: `false`
 - requires: `upsert-location`
 
-If `true`, update the citation metadata file `CITATION.cff` with the draft deposition's prereserved DOI before uploading any files to Zenodo or Zenodo Sandbox.
+If `true`, update the citation metadata file `CITATION.cff` with the draft deposition's prereserved DOI
+before uploading any files to Zenodo or Zenodo Sandbox.
 
 ### `upsert-location`
 
 - choices: `doi` | `identifiers` | `identifiers[i]`
 - only relevant when `upsert-doi` is `true`
 
-Where to insert the prereserved DOI value in `CITATION.cff`. Valid options are `doi`, `identifiers`, or `identifiers[i]`, where `i` should be replaced with an integer index into the array `identifiers`.
+Where to insert the prereserved DOI value in `CITATION.cff`. Valid options are `doi`, `identifiers`, or
+`identifiers[i]`, where `i` should be replaced with an integer index into the array `identifiers`.
 
 ### `sandbox`
 
 - default value: `true`
 
-Whether to create the draft deposition on Zenodo  (`sandbox: false`; production) or Zenodo Sandbox  (`sandbox: true`; testing and development).
+Whether to create the draft deposition on Zenodo  (`sandbox: false`; production) or Zenodo Sandbox
+(`sandbox: true`; testing and development).
 
 ### `verbose`
 
@@ -118,10 +147,17 @@ Whether to create the draft deposition on Zenodo  (`sandbox: false`; production)
 Whether the logging should be verbose.
 
 
-## Access tokens & repository secrets
+## Access tokens and repository secrets
 
-To use `zenodraft/action`, a personal access token is required, one for each platform you plan on using (Zenodo Sandbox, Zenodo).
-`zenodraft/action` looks for the access token in the environment variables named
-`ZENODO_SANDBOX_ACCESS_TOKEN` and `ZENODO_ACCESS_TOKEN`. The example workflow above shows that these
-variables are assigned their value from the repository's secrets. Visit Zenodo Sandbox (https://sandbox.zenodo.org/account/settings/applications/) and/or
-Zenodo (https://zenodo.org/account/settings/applications/) to create your own tokens, then go to [https://github.com/&lt;organization name&gt;/&lt;repository name&gt;/settings/secrets/actions](https://github.com/%3Corganization%20name%3E/%3Crepository%20name%3E/settings/secrets/actions) to set your repository secret.
+To use `zenodraft/action`, a personal access token is required, one for each platform you plan on using
+(Zenodo Sandbox, Zenodo). `zenodraft/action` looks for the access token in the environment variables
+named `ZENODO_SANDBOX_ACCESS_TOKEN` and `ZENODO_ACCESS_TOKEN`. The example workflow above shows that these
+variables are assigned their value from the repository's secrets. Visit Zenodo Sandbox
+(https://sandbox.zenodo.org/account/settings/applications/) and/or
+Zenodo (https://zenodo.org/account/settings/applications/) to create your own tokens, then go to
+[https://github.com/&lt;organization name&gt;/&lt;repository name&gt;/settings/secrets/actions](https://github.com/%3Corganization%20name%3E/%3Crepository%20name%3E/settings/secrets/actions)
+to set your repository secret.
+
+You don't have to create a `GITHUB_TOKEN` secret&mdash;GitHub has already done that for you&mdash;but you do need
+to get its value from the `secrets` and assign it to an environment variable, as in the example workflow at the
+top of this README.
