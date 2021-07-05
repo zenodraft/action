@@ -64,9 +64,7 @@ The following workflow trigger events are supported:
     preexisting release, do not trigger the workflow.
 
     If you are using `upsert-doi` to make changes to your repository files before uploading any files to Zenodo or Zenodo Sandbox,
-    those changes will be part of the deposition, and those changes will also need to be committed to the repository. This is
-    why the example workflow includes the `GITHUB_TOKEN` environment variable. If you are not using `upsert-doi`, `GITHUB_TOKEN`
-    is unused and may be omitted.
+    those changes will be part of the deposition, and the workflow will also commit those changes to your repository.
 
 1. Manually triggering via the `Actions` tab
  
@@ -81,6 +79,9 @@ The following workflow trigger events are supported:
     The workflow will attempt to assign the release tag value from the `version` key in the file that input argument `metadata` points
     to, or if that hasn't been defined, from the `version` key in file `CITATION.cff` if that file exists and the key has been defined.
     If neither exists, the workflow will use the short notation of the latest commit as tag value for the release.
+
+    If you are using `upsert-doi` to make changes to your repository files before uploading any files to Zenodo or Zenodo Sandbox,
+    those changes will be part of the deposition, and the workflow will also commit those changes to your repository.
 
 Any other events than `release published` or `workflow_dispatch` will raise an error.
 
