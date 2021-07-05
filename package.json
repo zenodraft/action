@@ -7,9 +7,10 @@
     "@actions/core": "^1.4.0",
     "@actions/exec": "^1.1.0",
     "@actions/github": "^5.0.0",
+    "@octokit/webhooks-definitions": "^3.67.3",
     "js-yaml": "^4.1.0",
     "typescript": "^4.3.2",
-    "zenodraft": "0.9.1"
+    "zenodraft": "0.10.0"
   },
   "description": "GitHub action to automate making draft depositions on Zenodo or Zenodo Sandbox",
   "homepage": "https://github.com/zenodraft/action#readme",
@@ -29,9 +30,10 @@
   },
   "scripts": {
     "all": "npm run clean && npm run transpile",
-    "clean": "rm -f lib/*",
+    "clean": "rm -rf lib/*",
     "test": "jest --config jest.config.js",
-    "transpile": "tsc -p tsconfig.json"
+    "transpile": "tsc -p tsconfig.json",
+    "deps": "echo '\nupdating dependencies for production\n' && rm -rf node_modules && npm install --production && git add node_modules --force && git status"
   },
   "version": "0.9.1",
   "devDependencies": {

@@ -1,3 +1,8 @@
 .vscode
 
-
+# when making a release, make sure to run
+# rm -rf node_modules
+# npm install --production
+# then
+# git add node_modules --force
+/node_modules

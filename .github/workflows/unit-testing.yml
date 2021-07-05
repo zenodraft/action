@@ -9,6 +9,7 @@ jobs:
       steps:
         - name: checkout
           uses: actions/checkout@v2
+        - name: install the dev dependencies
+          run: npm install
         - name: run unit tests with jest
           run: npm run test 
-
