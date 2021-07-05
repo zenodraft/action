@@ -1,8 +1,24 @@
 {
     "creators": [
         {
-            "name": "Spaaks, Jurriaan H."
+            "affiliation": "Netherlands eScience Center",
+            "name": "Spaaks, Jurriaan H.",
+            "orcid": "0000-0002-7064-4069"
         }
     ],
-    "title": "Zenodraft GitHub Action"
+    "description": "GitHub Action to automate drafting depositions on Zenodo or Zenodo Sandbox.",
+    "keywords": [
+        "research software",
+        "citable software",
+        "release",
+        "doi",
+        "ci",
+        "automation",
+        "integration"
+    ],
+    "license": {
+        "id": "Apache-2.0"
+    },
+    "title": "Zenodraft GitHub Action",
+    "version": "0.10.0"
 }
