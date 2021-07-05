@@ -82,14 +82,14 @@ Whether to automate finalizing the draft deposition as part of the automation (`
 - default value: `false`
 - requires: `upsert-location`
 
-If `true`, update the citation metadata file CITATION.cff with the draft deposition's prereserved doi before uploading any files to Zenodo or Zenodo Sandbox.
+If `true`, update the citation metadata file `CITATION.cff` with the draft deposition's prereserved DOI before uploading any files to Zenodo or Zenodo Sandbox.
 
 ### `upsert-location`
 
 - choices: `doi` | `identifiers` | `identifiers[i]`
 - only relevant when `upsert-doi` is `true`
 
-Where to insert the prereserved doi value in CITATION.cff. Valid options are `doi`, `identifiers`, or `identifiers[i]`, where `i` should be replaced with an integer index into the array `identifiers`.
+Where to insert the prereserved DOI value in `CITATION.cff`. Valid options are `doi`, `identifiers`, or `identifiers[i]`, where `i` should be replaced with an integer index into the array `identifiers`.
 
 ### `sandbox`
 
