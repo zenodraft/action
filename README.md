@@ -19,11 +19,7 @@ Creates a draft snapshot of your repository contents as a new version in collect
 ```yaml
 name: zenodraft
 on:
-  # "workflow_dispatch" allows for triggering the workflow
-  # manually via the Actions tab;
-  # "release published" allows for triggering the workflow
-  # when the user publishes a release on GitHub
-  workflow_dispatch: 
+  # Triggers when you publish a release via GitHub's release page
   release:
     types:
       - published  
