@@ -34,7 +34,7 @@ export const main = async (): Promise<void> => {
 
         // create the deposition as a new version in a new collection or
         // as a new version in an existing collection:
-        core.startGroup('creating deposition')
+        core.startGroup(`creating deposition on ${sandbox === true ? 'Zenodo Sandbox' : 'Zenodo'}`)
         let latest_id;
         if (collection_id === '') {
             latest_id = await zenodraft.deposition_create_in_new_collection(sandbox, verbose)

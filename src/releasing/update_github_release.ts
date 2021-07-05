@@ -8,11 +8,11 @@ import * as core from '@actions/core'
 export const update_github_release = async (payload: ReleasePublishedPayload, upsert_doi: boolean): Promise<void> => {
 
     if (upsert_doi === true) {
-        core.startGroup('updating the tag with changes that resulted from upserting the prereserved doi')        
+        let tag_name = payload.contents.release.tag_name
+        core.startGroup(`updating tag "${tag_name}" with changes that resulted from upserting the prereserved doi`)
         const [owner, repo] = payload.contents.repository.full_name.split('/').slice(0, 2)
         const release_id = payload.contents.release.id
         const target_commitish = payload.contents.release.target_commitish
-        let tag_name = payload.contents.release.tag_name
         const options = {
             body: payload.contents.release.body || "",
             draft: payload.contents.release.draft,
