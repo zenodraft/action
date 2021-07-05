@@ -1,8 +1,8 @@
 import { exec } from '@actions/exec'
 import { getInput,setFailed } from '@actions/core'
-import { get_payload as validate_triggering_event } from './releasing/get_payload'
-import { update_github_state } from './releasing/update_github_state'
-import { upsert_prereserved_doi } from './upserting/upsert_prereserved_doi'
+import { get_payload as validate_triggering_event } from './releasing/'
+import { update_github_state } from './releasing/'
+import { upsert_prereserved_doi } from './upserting/'
 import assert from 'assert'
 import zenodraft from 'zenodraft'
 
