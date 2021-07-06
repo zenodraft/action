@@ -12,7 +12,7 @@ jobs:
         - name: Checkout the contents of your repository
           uses: actions/checkout@v2
         - name: Create a draft snapshot of your repository contents as a new
-                version in collection 1234567 on Zenodo Sandbox using metadata
+                version in collection 5070798 on Zenodo using metadata
                 from repository file .zenodo.json
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
