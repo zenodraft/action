@@ -136,7 +136,7 @@ before uploading any files to Zenodo or Zenodo Sandbox.
 - only relevant when `upsert-doi` is `true`
 
 Where to insert the prereserved DOI value in `CITATION.cff`. Valid options are `doi`, `identifiers`, or
-`identifiers[i]`, where `i` should be replaced with an integer index into the array `identifiers`.
+`identifiers[i]`, where `i` should be replaced with an integer index into the array `identifiers`. The indexing is zero-based.
 
 ### `sandbox`
 
