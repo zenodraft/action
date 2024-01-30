@@ -41,5 +41,5 @@ test('upserting a doi',() => {
 
 
 afterEach(() => {
-    fs.rmdirSync(temporary_directory, { recursive: true });
+    fs.rmSync(temporary_directory, { recursive: true });
 })
