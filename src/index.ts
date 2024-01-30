@@ -6,6 +6,8 @@ import { upsert_prereserved_doi } from './upserting/'
 import assert from 'assert'
 import zenodraft from 'zenodraft'
 
+console.log(`zenodraft = ${zenodraft}`)
+
 
 const read_inputs = () => {
     const concept_id = core.getInput('concept')
