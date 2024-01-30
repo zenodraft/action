@@ -4,7 +4,7 @@ import { get_payload } from './releasing/'
 import { update_github_state } from './releasing/'
 import { upsert_prereserved_doi } from './upserting/'
 import assert from 'assert'
-import { default as zenodraft } from 'zenodraft'
+import zenodraft from 'zenodraft'
 
 
 const read_inputs = () => {
