@@ -5,7 +5,7 @@ Automates drafting depositions on Zenodo or Zenodo Sandbox.
 ## Features
 
 1. Choose which platform you want to draft your deposition on (Zenodo or Zenodo Sandbox), and easily switch between them.
-2. Choose to create your draft deposition as a new version in an existing collection, or as a new deposition in a new collection.
+2. Choose to create your draft deposition as a new version in an existing concept, or as a new deposition in a new concept.
 3. Choose to finalize the deposition as part of the automation, or leave the deposition as draft for you to inspect and publish manually by clicking the button on Zenodo or Zenodo Sandbox.
 4. Publish a snapshot of the repository as a zip or tar.gz.
 5. Instead of publishing a snapshot, select a subset of files to publish.
@@ -14,7 +14,7 @@ Automates drafting depositions on Zenodo or Zenodo Sandbox.
 
 ## Example workflow
 
-Creates a draft snapshot of your repository contents as a new version in collection `1234567` on Zenodo Sandbox using metadata from repository file `.zenodo.json`.
+Creates a draft snapshot of your repository contents as a new version in concept `1234567` on Zenodo Sandbox using metadata from repository file `.zenodo.json`.
 
 ```yaml
 name: zenodraft
@@ -31,14 +31,14 @@ jobs:
         - name: Checkout the contents of your repository
           uses: actions/checkout@v4
         - name: Create a draft snapshot of your repository contents as a new
-                version in collection 1234567 on Zenodo Sandbox using metadata
+                version in concept 1234567 on Zenodo Sandbox using metadata
                 from repository file .zenodo.json
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             ZENODO_SANDBOX_ACCESS_TOKEN: ${{ secrets.ZENODO_SANDBOX_ACCESS_TOKEN }}
           uses: zenodraft/action@0.10.0
           with:
-            collection: 1234567
+            concept: 1234567
             metadata: .zenodo.json
             publish: false
             sandbox: true
@@ -87,13 +87,6 @@ Any other events than `release published` or `workflow_dispatch` will raise an e
 
 ## Input parameters
 
-### `collection`
-
-By leaving `collection` unspecified, the draft is created as a new deposition in a new collection. Alternatively, you can
-have the new draft appear as a new version in a collection that you own on the target platform by assigning the collection
-identifier such as `1234567` to `collection`. You can find the collection identifier via Zenodo's frontend as the last
-part of the DOI listed under _Cite all versions?_ in the sidebar.
-
 ### `compression`
 
 - default value: `zip`
@@ -101,6 +94,13 @@ part of the DOI listed under _Cite all versions?_ in the sidebar.
 - overruled by `filenames`
 
 Which compression to use when making a snapshot of the entire repository.
+
+### `concept`
+
+By leaving `concept` unspecified, the draft is created as a new deposition in a new concept. Alternatively, you can
+have the new draft appear as a new version in a concept that you own on the target platform by assigning the concept
+identifier such as `1234567` to `concept`. You can find the concept identifier via Zenodo's frontend as the last
+part of the DOI listed under _Cite all versions?_ in the sidebar.
 
 ### `filenames`
 
