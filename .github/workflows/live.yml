@@ -1,0 +1,17 @@
+name: live
+on:
+  workflow_dispatch:
+
+jobs:
+  tests:
+      runs-on: ubuntu-latest
+      steps:
+
+        - name: checkout
+          uses: actions/checkout@v4
+
+        - name: Test without any input arguments / creating a draft in a new collection
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            ZENODO_SANDBOX_ACCESS_TOKEN: ${{ secrets.ZENODO_SANDBOX_ACCESS_TOKEN }}
+          uses: ./
