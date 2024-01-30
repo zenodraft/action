@@ -63,12 +63,13 @@ export const main = async (): Promise<void> => {
         const payload = await get_payload(metadata)
         core.endGroup()
 
+        core.debug(`zenodraft = ${zenodraft}`)
+
         // create the deposition as a new version in a new concept or
         // as a new version in an existing concept:
         core.startGroup(`creating deposition on ${sandbox === true ? 'Zenodo Sandbox' : 'Zenodo'}`)
         let version_id;
         if (concept_id === '') {
-            console.log(`zenodraft = ${zenodraft}`)
             version_id = await zenodraft.deposition_create_concept(token, sandbox, verbose)
         } else {
             version_id = await zenodraft.deposition_create_version(token, sandbox, concept_id, verbose)
