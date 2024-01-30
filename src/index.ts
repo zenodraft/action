@@ -4,9 +4,7 @@ import { get_payload } from './releasing/'
 import { update_github_state } from './releasing/'
 import { upsert_prereserved_doi } from './upserting/'
 import assert from 'assert'
-import zenodraft from 'zenodraft'
-
-console.log(`zenodraft = ${zenodraft}`)
+import { default as zenodraft } from 'zenodraft'
 
 
 const read_inputs = () => {
@@ -70,6 +68,7 @@ export const main = async (): Promise<void> => {
         core.startGroup(`creating deposition on ${sandbox === true ? 'Zenodo Sandbox' : 'Zenodo'}`)
         let version_id;
         if (concept_id === '') {
+            console.log(`zenodraft = ${zenodraft}`)
             version_id = await zenodraft.deposition_create_concept(token, sandbox, verbose)
         } else {
             version_id = await zenodraft.deposition_create_version(token, sandbox, concept_id, verbose)
