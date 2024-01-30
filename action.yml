@@ -4,8 +4,8 @@ branding:
   color: yellow
 description: Draft a deposition on Zenodo or Zenodo Sandbox
 inputs:
-  collection:
-    description: Create the new deposition as a new version in this collection.
+  concept:
+    description: Create the new deposition as a new version in this concept.
     required: false
     default: ''
   compression:
