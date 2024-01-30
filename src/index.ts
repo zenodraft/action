@@ -7,24 +7,51 @@ import assert from 'assert'
 import zenodraft from 'zenodraft'
 
 
+const read_inputs = () => {
+    const collection_id = core.getInput('collection')
+    const compression = core.getInput('compression')
+    const filenames = core.getInput('filenames')
+    const metadata = core.getInput('metadata')
+    const publish = core.getInput('publish') === 'true' ? true : false
+    const sandbox = core.getInput('sandbox') === 'false' ? false : true
+    const upsert_doi = core.getInput('upsert-doi') === 'true' ? true : false
+    const upsert_location = core.getInput('upsert-location')
+    const verbose = core.getInput('verbose') === 'true' ? true : false
+
+    assert(['tar.gz', 'zip'].includes(compression), 'Invalid value for input argument \'compression\'.' )
+    assert((new RegExp('[0-9]+')).test(collection_id) || collection_id === '', 'Invalid value for input argument \'collection\'.')
+
+    return {
+        collection_id,
+        compression,
+        filenames,
+        metadata,
+        publish,
+        sandbox,
+        upsert_doi,
+        upsert_location,
+        verbose
+    }
+}
+
+
 
 export const main = async (): Promise<void> => {
 
     try {
 
         core.startGroup('processing user input')
-        const collection_id = core.getInput('collection')
-        const compression = core.getInput('compression')
-        const filenames = core.getInput('filenames')
-        const metadata = core.getInput('metadata')
-        const publish = core.getInput('publish') === 'true' ? true : false
-        const sandbox = core.getInput('sandbox') === 'false' ? false : true
-        const upsert_doi = core.getInput('upsert-doi') === 'true' ? true : false
-        const upsert_location = core.getInput('upsert-location')
-        const verbose = core.getInput('verbose') === 'true' ? true : false
-
-        assert(['tar.gz', 'zip'].includes(compression), 'Invalid value for input argument \'compression\'.' )
-        assert((new RegExp('[0-9]+')).test(collection_id) || collection_id === '', 'Invalid value for input argument \'collection\'.')
+        const {
+            collection_id,
+            compression,
+            filenames,
+            metadata,
+            publish,
+            sandbox,
+            upsert_doi,
+            upsert_location,
+            verbose
+        } = read_inputs()
         core.endGroup()
 
         // calling this next function will throw if the triggering event is unsupported
@@ -44,7 +71,7 @@ export const main = async (): Promise<void> => {
         core.endGroup()
 
         if (upsert_doi === true) {
-            core.startGroup('upserting doi')            
+            core.startGroup('upserting doi')
             const prereserved_doi = await zenodraft.deposition_show_prereserved(sandbox, latest_id, verbose)
             upsert_prereserved_doi(upsert_location, prereserved_doi)
             core.endGroup()
@@ -87,7 +114,7 @@ export const main = async (): Promise<void> => {
 
         await update_github_state(payload, upsert_doi, metadata)
 
-    } catch (error) {
+    } catch (error: any) {
         core.setFailed(error.message)
     }
 }
