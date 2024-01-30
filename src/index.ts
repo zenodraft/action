@@ -4,7 +4,6 @@ import { get_payload } from './releasing/'
 import { update_github_state } from './releasing/'
 import { upsert_prereserved_doi } from './upserting/'
 import assert from 'assert'
-// import { default as zenodraft } from 'zenodraft'
 import * as zenodraft from 'zenodraft'
 
 
@@ -39,7 +38,6 @@ const read_inputs = () => {
 }
 
 
-
 export const main = async (): Promise<void> => {
 
     try {
@@ -63,8 +61,6 @@ export const main = async (): Promise<void> => {
         core.startGroup('payload')
         const payload = await get_payload(metadata)
         core.endGroup()
-
-        core.debug(`zenodraft = ${zenodraft}`)
 
         // create the deposition as a new version in a new concept or
         // as a new version in an existing concept:
