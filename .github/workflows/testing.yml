@@ -1,4 +1,4 @@
-name: unittests
+name: testing
 on:
   pull_request:
 
@@ -8,8 +8,8 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - name: checkout
-          uses: actions/checkout@v2
+          uses: actions/checkout@v4
         - name: install the dev dependencies
           run: npm install
         - name: run unit tests with jest
-          run: npm run test 
+          run: npm run test
