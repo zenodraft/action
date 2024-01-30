@@ -1,4 +1,4 @@
-# `zenodraft/action@0.13.0` PRERELEASE
+# `zenodraft/action@0.13.1` PRERELEASE
 
 Automates drafting depositions on Zenodo or Zenodo Sandbox.
 
@@ -36,7 +36,7 @@ jobs:
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             ZENODO_SANDBOX_ACCESS_TOKEN: ${{ secrets.ZENODO_SANDBOX_ACCESS_TOKEN }}
-          uses: zenodraft/action@0.10.0
+          uses: zenodraft/action@0.13.1
           with:
             concept: 1234567
             metadata: .zenodo.json
