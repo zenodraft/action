@@ -16,7 +16,7 @@ export const determine_tag_name = async (filename: string): Promise<string> => {
         version_cff = undefined
     }
 
-    let version_zenodo: string | undefined    
+    let version_zenodo: string | undefined
     try {
         version_zenodo = JSON.parse(fs.readFileSync(filename, 'utf8')).version!.toString()
     }  catch (err) {

@@ -1,6 +1,6 @@
 import { exec } from '@actions/exec'
 import * as core from '@actions/core'
-import { get_payload as validate_triggering_event } from './releasing/'
+import { get_payload } from './releasing/'
 import { update_github_state } from './releasing/'
 import { upsert_prereserved_doi } from './upserting/'
 import assert from 'assert'
@@ -12,7 +12,7 @@ export const main = async (): Promise<void> => {
 
     try {
 
-        core.startGroup('processing user input')        
+        core.startGroup('processing user input')
         const collection_id = core.getInput('collection')
         const compression = core.getInput('compression')
         const filenames = core.getInput('filenames')
@@ -29,7 +29,7 @@ export const main = async (): Promise<void> => {
 
         // calling this next function will throw if the triggering event is unsupported
         core.startGroup('payload')
-        const payload = await validate_triggering_event(metadata)
+        const payload = await get_payload(metadata)
         core.endGroup()
 
         // create the deposition as a new version in a new collection or

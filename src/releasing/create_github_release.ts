@@ -17,7 +17,7 @@ export const create_github_release = async (payload: WorkflowDispatchPayload, up
         payload.tag = await update_tag_name(filename)
         core.endGroup()
     }
-    core.startGroup('creating the github release')    
+    core.startGroup('creating the github release')
     const [owner, repo] = payload.contents.repository.full_name.split('/').slice(0, 2)
     const options = {
         name: payload.tag,

@@ -6,7 +6,7 @@ export const get_commit_string = async (): Promise<string> => {
 
     let my_stdout = ''
     let my_stderr = ''
-    
+
     const options: any = {}
     options.listeners = {
         stdout: (data: Buffer) => {

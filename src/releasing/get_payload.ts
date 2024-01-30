@@ -8,12 +8,12 @@ import * as github from '@actions/github'
 
 export const get_payload = async (filename: string): Promise<Payload>  => {
 
-    core.info(JSON.stringify(github.context.payload, null, 4))    
+    core.info(JSON.stringify(github.context.payload, null, 4))
 
     if (github.context.eventName === 'workflow_dispatch') {
         return {
             contents: github.context.payload as WorkflowDispatchEvent,
-            event: 'WorkflowDispatch',            
+            event: 'WorkflowDispatch',
             tag: await determine_tag_name(filename)
         }
     }
