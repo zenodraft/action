@@ -1,4 +1,4 @@
-# `zenodraft/action@0.10.0` PRERELEASE
+# `zenodraft/action@0.13.0` PRERELEASE
 
 Automates drafting depositions on Zenodo or Zenodo Sandbox.
 
@@ -29,7 +29,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - name: Checkout the contents of your repository
-          uses: actions/checkout@v2
+          uses: actions/checkout@v4
         - name: Create a draft snapshot of your repository contents as a new
                 version in collection 1234567 on Zenodo Sandbox using metadata
                 from repository file .zenodo.json
@@ -54,7 +54,7 @@ The following workflow trigger events are supported:
     on:
       release:
         types:
-          - published  
+        - published
     ```
 
     With this trigger event, any non-draft releases and prereleases that you make via GitHub's releases page will in turn trigger
