@@ -90,7 +90,7 @@ export const main = async (): Promise<void> => {
                 await exec('tar', ['--exclude=.git', `--exclude=${archive_name}`, '-zcvf', archive_name, '.'])
                 await zenodraft.file_add(token, sandbox, version_id, archive_name, verbose)
             } else if (compression === 'zip') {
-                await exec('zip', ['-r', '-x', '/.git*', '-v', archive_name, '.'])
+                await exec('zip', ['-x', '".git/*"', '-r', '-v', archive_name, '.'])
                 await zenodraft.file_add(token, sandbox, version_id, archive_name, verbose)
             } else {
                 throw new Error('Unknown compression method.')
