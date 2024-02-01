@@ -87,7 +87,7 @@ export const main = async (): Promise<void> => {
             const archive_name = `${payload.contents.repository.name}.${compression}`
             if (compression === 'tar.gz') {
                 await exec('touch', [archive_name])
-                await exec('tar', ['--exclude=\'.\'', '--exclude=\'..\'', '--exclude=\'.git\'', `--exclude=${archive_name}`, '-zcvf', archive_name, `ls -1a`])
+                await exec('tar', ['--exclude=\'.\'', '--exclude=\'..\'', '--exclude=\'.git\'', `--exclude=${archive_name}`, '-zcvf', archive_name, '`ls -1a`'])
                 await zenodraft.file_add(token, sandbox, version_id, archive_name, verbose)
             } else if (compression === 'zip') {
                 await exec('zip', ['-r', '-v', archive_name, '.', '-x', '/.git/*'])
