@@ -71,6 +71,7 @@ export const main = async (): Promise<void> => {
         } else {
             version_id = await zenodraft.deposition_create_version(token, sandbox, concept_id, verbose)
         }
+        core.setOutput("version_id", version_id)
         core.endGroup()
 
         if (upsert_doi === true) {
